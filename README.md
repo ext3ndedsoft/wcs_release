@@ -27,19 +27,15 @@
 
 ### 🔑 Приобретение лицензии и активация (WCS Pro)
 Официальная активация лицензии и поддержка разработчика осуществляются через защищённый сервис с гарантией безопасной сделки **FunPay**:
-<div align="center">
-[![Купить на FunPay](https://img.shields.io/badge/FunPay-Купить_лицензию_WCS_Pro-10B981?style=for-the-badge&logo=shield&logoColor=white)](https://funpay.com/users/ВАШ_ID/)
-[![Связь с разработчиком](https://img.shields.io/badge/Telegram-Поддержка_и_Вопросы-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/ВАШ_ТЕЛЕГРАМ)
-</div>
-> [!NOTE]
-> **Гарантия безопасной сделки:** При покупке через площадку FunPay деньги замораживаются гарантом и переводятся продавцу только после того, как вы успешно активировали программу и подтвердили её полную работоспособность.
-#### Что даёт лицензия WCS Pro:
-* ⚡ **Полный доступ ко всем киберспортивным модулям:** автоматический Game Boost, таймеры 0.500 мс, переключение IRQ/MSI в 1 клик.
-* 🧹 **Advanced Memory Cleaner:** фоновая очистка Standby-кэша ядра и оптимизация рабочих наборов ОЗУ без лагов в играх.
-* 🔄 **Пожизненные обновления:** автоматическая загрузка всех будущих патчей, оптимизаций под новые билды Windows 10/11 и пресетов.
-* 💬 **Персональная техподдержка:** помощь в решении индивидуальных проблем с инпут-лагом и конфигурацией системы.
-> [!WARNING]
-> Остерегайтесь подделок и сторонних сборок! Официальные ключи и чистые скомпилированные бинарники распространяются **исключительно** через указанный профиль FunPay и официальные [GitHub Releases](https://github.com/ext3ndedsoft/wcs_release/releases).
+<p align="center">
+  <a href="https://funpay.com/users/275574/" target="_blank">
+    <img src="https://img.shields.io/badge/FunPay-%D0%9A%D1%83%D0%BF%D0%B8%D1%82%D1%8C_%D0%BB%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8E-10B981?style=for-the-badge&logo=shield&logoColor=white" alt="Купить лицензию на FunPay" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://t.me/ext3nded7" target="_blank">
+    <img src="https://img.shields.io/badge/Telegram-%D0%A1%D0%B2%D1%8F%D0%B7%D1%8C_%D0%B8_%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram поддержка" />
+  </a>
+</p>
 
 ---
 
