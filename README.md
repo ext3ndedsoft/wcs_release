@@ -9,7 +9,7 @@
 ![Latency](https://img.shields.io/badge/Timer%20Resolution-0.500ms-F59E0B?style=for-the-badge&logo=speedtest&logoColor=white)
 ![Build](https://img.shields.io/badge/Architecture-x64%20Standalone%20EXE-8B5CF6?style=for-the-badge)
 
-**Профессиональный нативный киберспортивный оптимизатор Windows и студия тонкой инженерии операционной системы.**
+**Профессиональный нативный твикер для Windows и студия тонкой инженерии операционной системы.**
 
 [Скачать актуальный релиз](https://github.com/ext3ndedsoft/wcs_release/releases) • [Возможности](#-модули-и-ключевые-возможности) • [Античит-безопасность](#-100-античит-безопасность) • [Сборка](#-сборка-из-исходников)
 
