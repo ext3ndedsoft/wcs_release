@@ -1,0 +1,731 @@
+/* ==========================================================================
+   Windows Config Studio — 2D Background Art & Visual Themes
+   Pure vector SVG layered backgrounds for Esports Luxury Aesthetic
+   ========================================================================== */
+
+:root {
+  --theme-bg-opacity: 0.45;
+  --theme-anim-speed-mult: 1;
+  --glass-blur: 20px;
+}
+
+/* Base Theme Background Layer Container */
+.theme-bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: var(--theme-bg-opacity, 0.45);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+  will-change: opacity;
+}
+
+/* --------------------------------------------------------------------------
+   1. THEME: 2D Japanese Minimalism (Fujisan & Torii)
+   -------------------------------------------------------------------------- */
+.theme-bg-fuji {
+  background-color: #080a14;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='fujiSky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23060814'/%3E%3Cstop offset='60%25' stop-color='%23120f24'/%3E%3Cstop offset='100%25' stop-color='%231b132e'/%3E%3C/linearGradient%3E%3CradialGradient id='sunGlow' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23ff3b5c' stop-opacity='0.9'/%3E%3Cstop offset='60%25' stop-color='%23e11d48' stop-opacity='0.75'/%3E%3Cstop offset='100%25' stop-color='%239f1239' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='fujiGrad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%231e1b38'/%3E%3Cstop offset='100%25' stop-color='%230a0c16'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23fujiSky)'/%3E%3Ccircle cx='960' cy='520' r='180' fill='%23ff3b5c' opacity='0.8'/%3E%3Ccircle cx='960' cy='520' r='250' fill='url(%23sunGlow)' opacity='0.45'/%3E%3Cpath d='M200,420 Q350,400 500,420 Q650,440 800,420' stroke='rgba(255,255,255,0.12)' stroke-width='16' stroke-linecap='round' fill='none'/%3E%3Cpath d='M1200,380 Q1380,360 1560,380 Q1700,400 1850,380' stroke='rgba(255,255,255,0.1)' stroke-width='14' stroke-linecap='round' fill='none'/%3E%3Cpath d='M0,780 L280,680 L620,760 L960,670 L1320,770 L1680,660 L1920,740 L1920,1080 L0,1080 Z' fill='%23101222' opacity='0.6'/%3E%3Cpath d='M520,1080 L820,540 Q960,510 1100,540 L1400,1080 Z' fill='url(%23fujiGrad)'/%3E%3Cpath d='M820,540 Q960,510 1100,540 L1040,640 Q960,610 880,640 Z' fill='%23f1f5f9' opacity='0.88'/%3E%3Cpath d='M0,880 Q400,820 800,890 Q1200,940 1600,860 Q1800,830 1920,870 L1920,1080 L0,1080 Z' fill='%230b0d18'/%3E%3Cg fill='%23e11d48' opacity='0.88'%3E%3Cpath d='M1460,700 Q1570,685 1680,700 L1680,712 Q1570,700 1460,712 Z'/%3E%3Crect x='1480' y='724' width='180' height='10' rx='2'/%3E%3Crect x='1510' y='712' width='16' height='180' rx='3'/%3E%3Crect x='1614' y='712' width='16' height='180' rx='3'/%3E%3Crect x='1562' y='712' width='16' height='22' rx='2'/%3E%3Crect x='1504' y='882' width='28' height='10' rx='2' fill='%23080a10'/%3E%3Crect x='1608' y='882' width='28' height='10' rx='2' fill='%23080a10'/%3E%3C/g%3E%3Ccircle cx='700' cy='460' r='4' fill='%23f43f5e' opacity='0.65'/%3E%3Ccircle cx='740' cy='490' r='3' fill='%23fda4af' opacity='0.5'/%3E%3Ccircle cx='860' cy='430' r='4.5' fill='%23f43f5e' opacity='0.7'/%3E%3Ccircle cx='1280' cy='520' r='4' fill='%23fda4af' opacity='0.6'/%3E%3Ccircle cx='1350' cy='480' r='5' fill='%23f43f5e' opacity='0.7'/%3E%3Ccircle cx='1420' cy='550' r='3.5' fill='%23fda4af' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   2. THEME: 2D Mountain Range (Twilight Peaks)
+   -------------------------------------------------------------------------- */
+.theme-bg-mountains {
+  background-color: #070b16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='mtnSky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23050814'/%3E%3Cstop offset='50%25' stop-color='%230c1326'/%3E%3Cstop offset='100%25' stop-color='%2316213b'/%3E%3C/linearGradient%3E%3ClinearGradient id='ridge1' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%231f2d4d'/%3E%3Cstop offset='100%25' stop-color='%230d1526'/%3E%3C/linearGradient%3E%3ClinearGradient id='ridge2' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23162038'/%3E%3Cstop offset='100%25' stop-color='%230a0e1a'/%3E%3C/linearGradient%3E%3ClinearGradient id='ridge3' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%230d1424'/%3E%3Cstop offset='100%25' stop-color='%23060810'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23mtnSky)'/%3E%3Ccircle cx='1540' cy='220' r='46' fill='none' stroke='rgba(0,210,255,0.15)' stroke-width='24'/%3E%3Cpath d='M1540,180 A40,40 0 1 0 1570,245 A34,34 0 1 1 1540,180 Z' fill='%23e2e8f0' opacity='0.85'/%3E%3Ccircle cx='240' cy='140' r='2' fill='%23fff' opacity='0.6'/%3E%3Ccircle cx='480' cy='220' r='1.5' fill='%2338bdf8' opacity='0.7'/%3E%3Ccircle cx='720' cy='110' r='2' fill='%23fff' opacity='0.8'/%3E%3Ccircle cx='1040' cy='180' r='1.5' fill='%23fff' opacity='0.5'/%3E%3Ccircle cx='1320' cy='130' r='2.5' fill='%2338bdf8' opacity='0.7'/%3E%3Ccircle cx='1780' cy='160' r='2' fill='%23fff' opacity='0.6'/%3E%3Cpath d='M0,640 L160,560 L380,680 L580,510 L760,630 L980,480 L1180,620 L1420,490 L1660,640 L1820,530 L1920,590 L1920,1080 L0,1080 Z' fill='url(%23ridge1)' opacity='0.55'/%3E%3Cpath d='M0,740 L220,620 L440,730 L720,580 L960,710 L1220,570 L1480,720 L1740,600 L1920,690 L1920,1080 L0,1080 Z' fill='url(%23ridge2)' opacity='0.8'/%3E%3Cpath d='M0,860 Q300,780 600,840 Q900,900 1200,810 Q1500,750 1920,830 L1920,1080 L0,1080 Z' fill='url(%23ridge3)'/%3E%3Cg fill='%23070b14' opacity='0.9'%3E%3Cpolygon points='180,800 174,830 186,830'/%3E%3Cpolygon points='220,790 213,824 227,824'/%3E%3Cpolygon points='260,805 254,832 266,832'/%3E%3Cpolygon points='620,810 613,842 627,842'/%3E%3Cpolygon points='660,795 652,836 668,836'/%3E%3Cpolygon points='1240,780 1232,825 1248,825'/%3E%3Cpolygon points='1280,790 1273,830 1287,830'/%3E%3Cpolygon points='1320,775 1312,822 1328,822'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   3. THEME: 2D Cyber Horizon (Neon Synthwave Skyline)
+   -------------------------------------------------------------------------- */
+.theme-bg-cyber {
+  background-color: #070814;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='cyberSky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23060714'/%3E%3Cstop offset='60%25' stop-color='%23110d29'/%3E%3Cstop offset='100%25' stop-color='%231b103c'/%3E%3C/linearGradient%3E%3ClinearGradient id='cyberSun' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%2300d2ff'/%3E%3Cstop offset='50%25' stop-color='%23a855f7'/%3E%3Cstop offset='100%25' stop-color='%23f43f5e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23cyberSky)'/%3E%3Cg opacity='0.7'%3E%3Ccircle cx='960' cy='520' r='160' fill='url(%23cyberSun)'/%3E%3Crect x='790' y='520' width='340' height='6' fill='%230f0d26'/%3E%3Crect x='790' y='540' width='340' height='9' fill='%23110e2b'/%3E%3Crect x='790' y='565' width='340' height='12' fill='%23131030'/%3E%3Crect x='790' y='595' width='340' height='16' fill='%23161036'/%3E%3Crect x='790' y='630' width='340' height='22' fill='%2319103c'/%3E%3C/g%3E%3Cg fill='%230c0d1c' opacity='0.88'%3E%3Crect x='100' y='540' width='70' height='300'/%3E%3Cpolygon points='135,500 125,540 145,540' fill='%2300d2ff' opacity='0.7'/%3E%3Crect x='190' y='580' width='90' height='260'/%3E%3Crect x='300' y='510' width='110' height='330'/%3E%3Crect x='430' y='610' width='80' height='230'/%3E%3Crect x='530' y='560' width='95' height='280'/%3E%3Crect x='640' y='630' width='120' height='210'/%3E%3Crect x='1160' y='620' width='110' height='220'/%3E%3Crect x='1290' y='540' width='85' height='300'/%3E%3Crect x='1395' y='490' width='105' height='350'/%3E%3Cpolygon points='1447,440 1438,490 1456,490' fill='%23ec4899' opacity='0.7'/%3E%3Crect x='1520' y='570' width='90' height='270'/%3E%3Crect x='1630' y='600' width='120' height='240'/%3E%3Crect x='1770' y='530' width='80' height='310'/%3E%3C/g%3E%3Cline x1='0' y1='780' x2='1920' y2='780' stroke='%2300d2ff' stroke-width='2' opacity='0.8'/%3E%3Cline x1='0' y1='780' x2='1920' y2='780' stroke='%2300d2ff' stroke-width='10' opacity='0.25'/%3E%3Cg stroke='rgba(0,210,255,0.25)' stroke-width='1.5'%3E%3Cline x1='960' y1='780' x2='960' y2='1080'/%3E%3Cline x1='960' y1='780' x2='800' y2='1080'/%3E%3Cline x1='960' y1='780' x2='1120' y2='1080'/%3E%3Cline x1='960' y1='780' x2='620' y2='1080'/%3E%3Cline x1='960' y1='780' x2='1300' y2='1080'/%3E%3Cline x1='960' y1='780' x2='400' y2='1080'/%3E%3Cline x1='960' y1='780' x2='1520' y2='1080'/%3E%3Cline x1='960' y1='780' x2='150' y2='1080'/%3E%3Cline x1='960' y1='780' x2='1770' y2='1080'/%3E%3Cline x1='0' y1='800' x2='1920' y2='800'/%3E%3Cline x1='0' y1='830' x2='1920' y2='830'/%3E%3Cline x1='0' y1='875' x2='1920' y2='875'/%3E%3Cline x1='0' y1='935' x2='1920' y2='935'/%3E%3Cline x1='0' y1='1010' x2='1920' y2='1010'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   4. THEME: 2D Deep Cosmos (Nebula & Planetary Rings)
+   -------------------------------------------------------------------------- */
+.theme-bg-cosmos {
+  background-color: #050711;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='spaceSky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%2304060e'/%3E%3Cstop offset='60%25' stop-color='%230a1024'/%3E%3Cstop offset='100%25' stop-color='%23101a36'/%3E%3C/linearGradient%3E%3CradialGradient id='nebulaCyan' cx='25%25' cy='35%25' r='40%25'%3E%3Cstop offset='0%25' stop-color='%2300d2ff' stop-opacity='0.28'/%3E%3Cstop offset='100%25' stop-color='%2300d2ff' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='nebulaPurple' cx='75%25' cy='65%25' r='45%25'%3E%3Cstop offset='0%25' stop-color='%238b5cf6' stop-opacity='0.25'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23spaceSky)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23nebulaCyan)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23nebulaPurple)'/%3E%3Cg transform='translate(380, 260) rotate(-22)' opacity='0.8'%3E%3Cellipse cx='0' cy='0' rx='180' ry='40' fill='none' stroke='rgba(56,189,248,0.35)' stroke-width='14'/%3E%3Ccircle cx='0' cy='0' r='90' fill='%230e1933'/%3E%3Ccircle cx='0' cy='0' r='90' fill='none' stroke='rgba(0,210,255,0.4)' stroke-width='2'/%3E%3Cpath d='M-180,0 A180,40 0 0,0 180,0' fill='none' stroke='rgba(56,189,248,0.5)' stroke-width='14'/%3E%3C/g%3E%3Cg stroke='rgba(255,255,255,0.25)' stroke-width='1'%3E%3Cline x1='1250' y1='220' x2='1380' y2='190'/%3E%3Cline x1='1380' y1='190' x2='1480' y2='270'/%3E%3Cline x1='1480' y1='270' x2='1620' y2='240'/%3E%3Cline x1='1480' y1='270' x2='1440' y2='380'/%3E%3Cline x1='1440' y1='380' x2='1560' y2='450'/%3E%3C/g%3E%3Cg fill='%23fff' opacity='0.85'%3E%3Ccircle cx='1250' cy='220' r='3.5'/%3E%3Ccircle cx='1380' cy='190' r='3'/%3E%3Ccircle cx='1480' cy='270' r='4.5'/%3E%3Ccircle cx='1620' cy='240' r='3'/%3E%3Ccircle cx='1440' cy='380' r='3'/%3E%3Ccircle cx='1560' cy='450' r='4'/%3E%3C/g%3E%3Cpath d='M800,900 A900,450 0 0,0 1920,400' fill='none' stroke='rgba(139,92,246,0.22)' stroke-dasharray='8,12' stroke-width='1.5'/%3E%3Cpath d='M200,980 A1200,500 0 0,0 1800,750' fill='none' stroke='rgba(0,210,255,0.2)' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   5. THEME: Obsidian Minimal (Esports Standard Matrix)
+   -------------------------------------------------------------------------- */
+.theme-bg-obsidian {
+  background-color: #080a0f;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3CradialGradient id='cornerGlow1' cx='0%25' cy='100%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%2300d2ff' stop-opacity='0.16'/%3E%3Cstop offset='100%25' stop-color='%2300d2ff' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='cornerGlow2' cx='100%25' cy='0%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%230a84ff' stop-opacity='0.14'/%3E%3Cstop offset='100%25' stop-color='%230a84ff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cpattern id='esportsGrid' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='20' r='1' fill='rgba(255,255,255,0.08)'/%3E%3Cpath d='M40,0 L0,0 0,40' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='%23080a0f'/%3E%3Crect width='100%25' height='100%25' fill='url(%23esportsGrid)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23cornerGlow1)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23cornerGlow2)'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   Settings Theme Picker UI Styles
+   -------------------------------------------------------------------------- */
+.theme-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.theme-card {
+  position: relative;
+  background: rgba(16, 20, 29, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.theme-card:hover {
+  background: rgba(22, 28, 42, 0.85);
+  border-color: rgba(0, 210, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.theme-card.active {
+  background: rgba(22, 32, 50, 0.9);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 1px var(--accent-primary), 0 8px 26px rgba(0, 210, 255, 0.25);
+}
+
+.theme-preview-box {
+  width: 100%;
+  height: 80px;
+  border-radius: 6px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-preview-box.prev-fuji {
+  background-color: #080a14;
+  background-image: linear-gradient(180deg, #060814 0%, #120f24 60%, #1b132e 100%);
+}
+.theme-preview-box.prev-fuji::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: url('/icons/star.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgba(255, 59, 92, 0.7));
+  opacity: 0.9;
+}
+
+.theme-preview-box.prev-mountains {
+  background-color: #070b16;
+  background-image: linear-gradient(180deg, #050814 0%, #0c1326 60%, #16213b 100%);
+}
+.theme-preview-box.prev-mountains::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: url('/icons/crosshair.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.7));
+  opacity: 0.9;
+}
+
+.theme-preview-box.prev-cyber {
+  background-color: #070814;
+  background-image: linear-gradient(180deg, #060714 0%, #110d29 60%, #1b103c 100%);
+}
+.theme-preview-box.prev-cyber::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: url('/icons/zap.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.7));
+  opacity: 0.9;
+}
+
+.theme-preview-box.prev-cosmos {
+  background-color: #050711;
+  background-image: linear-gradient(180deg, #04060e 0%, #0a1024 60%, #101a36 100%);
+}
+.theme-preview-box.prev-cosmos::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: url('/icons/star.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.7));
+  opacity: 0.9;
+}
+
+.theme-preview-box.prev-obsidian {
+  background-color: #080a0f;
+  background-image: radial-gradient(circle at 100% 0%, rgba(10, 132, 255, 0.25) 0%, transparent 60%), radial-gradient(circle at 0% 100%, rgba(0, 210, 255, 0.25) 0%, transparent 60%);
+}
+.theme-preview-box.prev-obsidian::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: url('/icons/bolt.png') center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.7));
+  opacity: 0.9;
+}
+
+.theme-card-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theme-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.theme-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.theme-tag.tag-jp {
+  background: rgba(225, 29, 72, 0.18);
+  color: #fb7185;
+  border: 1px solid rgba(225, 29, 72, 0.35);
+}
+
+.theme-tag.tag-mtn {
+  background: rgba(14, 165, 233, 0.18);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.35);
+}
+
+.theme-tag.tag-cyber {
+  background: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.theme-tag.tag-space {
+  background: rgba(99, 102, 241, 0.18);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+.theme-tag.tag-default {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.theme-desc {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+
+.theme-opacity-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-opacity-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.theme-opacity-btn.active {
+  background: var(--accent-gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* --------------------------------------------------------------------------
+   Dynamic Living Background Animation Engine
+   Hardware-accelerated 60+ FPS particles & environmental lighting
+   -------------------------------------------------------------------------- */
+.theme-anim-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+body.theme-anim-disabled .theme-anim-layer,
+.theme-bg-layer.theme-anim-disabled .theme-anim-layer {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* 1. FUJI ANIMATIONS (Falling Sakura Petals & Breathing Sun) */
+.fuji-sun-aura {
+  position: absolute;
+  left: 50%;
+  top: 520px;
+  width: 440px;
+  height: 440px;
+  margin-left: -220px;
+  margin-top: -220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 59, 92, 0.55) 0%, rgba(225, 29, 72, 0.25) 50%, rgba(159, 18, 57, 0) 75%);
+  animation: fujiSunCorona calc(4.5s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+  pointer-events: none;
+  filter: blur(8px);
+}
+
+@keyframes fujiSunCorona {
+  0% { transform: scale(0.92); opacity: 0.45; }
+  100% { transform: scale(1.14); opacity: 0.85; filter: blur(14px); }
+}
+
+.fuji-mist-band {
+  position: absolute;
+  height: 38px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.14) 50%, rgba(255, 255, 255, 0.08) 75%, transparent 100%);
+  filter: blur(10px);
+  pointer-events: none;
+  animation: fujiMistDrift calc(28s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+}
+
+.fuji-mist-band-1 {
+  width: 900px;
+  left: 15%;
+  top: 410px;
+}
+
+.fuji-mist-band-2 {
+  width: 1100px;
+  left: 40%;
+  top: 480px;
+  animation-delay: -12s;
+}
+
+@keyframes fujiMistDrift {
+  0% { transform: translate3d(-60px, 0, 0); opacity: 0.4; }
+  100% { transform: translate3d(80px, 0, 0); opacity: 0.85; }
+}
+
+/* Realistic Sakura Falling Petals */
+.sakura-petal {
+  position: absolute;
+  top: -40px;
+  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 50%, #fda4af 100%);
+  border-radius: 14px 2px 14px 2px;
+  opacity: 0;
+  box-shadow: 0 0 6px rgba(255, 117, 140, 0.4);
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: sakuraFall calc(var(--fall-dur, 10s) / var(--theme-anim-speed-mult, 1)) linear infinite,
+             sakuraSway calc(var(--sway-dur, 3.2s) / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes sakuraFall {
+  0% {
+    top: -40px;
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg) rotateY(0deg);
+  }
+  10% {
+    opacity: 0.88;
+  }
+  88% {
+    opacity: 0.82;
+  }
+  100% {
+    top: 105vh;
+    opacity: 0;
+    transform: translate3d(-140px, 0, 0) rotate(540deg) rotateY(360deg);
+  }
+}
+
+@keyframes sakuraSway {
+  0% {
+    margin-left: 0px;
+  }
+  100% {
+    margin-left: 55px;
+  }
+}
+
+/* 2. MOUNTAIN ANIMATIONS (Twinkling Alpine Stars & Aurora Borealis) */
+.alpine-aurora {
+  position: absolute;
+  top: 40px;
+  left: -10%;
+  width: 120%;
+  height: 380px;
+  background: linear-gradient(100deg, 
+    transparent 0%, 
+    rgba(52, 211, 153, 0.18) 20%, 
+    rgba(56, 189, 248, 0.28) 45%, 
+    rgba(168, 85, 247, 0.22) 70%, 
+    transparent 100%);
+  filter: blur(45px);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: auroraUndulate calc(16s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+}
+
+@keyframes auroraUndulate {
+  0% {
+    transform: translate3d(-30px, 0, 0) skewX(-6deg) scaleY(0.9);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(40px, -20px, 0) skewX(5deg) scaleY(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate3d(-10px, 15px, 0) skewX(-3deg) scaleY(1.05);
+    opacity: 0.55;
+  }
+}
+
+.alpine-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  pointer-events: none;
+  will-change: transform, opacity;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
+  animation: starTwinkle calc(var(--t-dur, 3s) / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+  animation-delay: var(--t-del, 0s);
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.18;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.95), 0 0 20px rgba(56, 189, 248, 0.7);
+  }
+}
+
+.alpine-shooting-star {
+  position: absolute;
+  top: 14%;
+  left: 35%;
+  width: 140px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(56, 189, 248, 0.8) 40%, transparent 100%);
+  transform: rotate(-32deg);
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+  animation: meteorArc calc(9s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite;
+}
+
+@keyframes meteorArc {
+  0%, 82% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(-32deg) scale(0);
+  }
+  85% {
+    opacity: 1;
+    transform: translate3d(30px, 20px, 0) rotate(-32deg) scale(1);
+  }
+  92% {
+    opacity: 0;
+    transform: translate3d(360px, 220px, 0) rotate(-32deg) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 3. CYBER ANIMATIONS (Moving Synthwave Grid & Neon Horizon) */
+.cyber-grid-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  overflow: hidden;
+  perspective: 320px;
+  perspective-origin: 50% 0%;
+  pointer-events: none;
+}
+
+.cyber-grid-plane {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 600px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 210, 255, 0.28) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, rgba(0, 210, 255, 0.28) 1.5px, transparent 1.5px);
+  background-size: 60px 36px;
+  transform: rotateX(68deg);
+  transform-origin: 50% 0%;
+  animation: cyberGridDrive calc(1.4s / var(--theme-anim-speed-mult, 1)) linear infinite;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.1) 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.1) 85%, transparent 100%);
+}
+
+@keyframes cyberGridDrive {
+  0% { transform: rotateX(68deg) translate3d(0, 0, 0); }
+  100% { transform: rotateX(68deg) translate3d(0, 36px, 0); }
+}
+
+.cyber-horizon-beam {
+  position: absolute;
+  top: 780px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 210, 255, 0.5) 20%, 
+    rgba(236, 72, 153, 0.9) 50%, 
+    rgba(0, 210, 255, 0.5) 80%, 
+    transparent 100%);
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.8), 0 0 35px rgba(236, 72, 153, 0.6);
+  pointer-events: none;
+  animation: cyberHorizonPulse calc(3.5s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+}
+
+@keyframes cyberHorizonPulse {
+  0% { opacity: 0.55; filter: brightness(0.9); }
+  100% { opacity: 1; filter: brightness(1.3); }
+}
+
+.cyber-sun-corona {
+  position: absolute;
+  left: 50%;
+  top: 520px;
+  width: 380px;
+  height: 380px;
+  margin-left: -190px;
+  margin-top: -190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.35) 0%, rgba(168, 85, 247, 0.2) 50%, transparent 70%);
+  animation: cyberSunPulse calc(4s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes cyberSunPulse {
+  0% { transform: scale(0.96); opacity: 0.5; }
+  100% { transform: scale(1.1); opacity: 0.9; }
+}
+
+.cyber-beacon {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ff3b5c;
+  box-shadow: 0 0 8px #ff3b5c;
+  pointer-events: none;
+  animation: cyberBeaconBlink calc(1.8s / var(--theme-anim-speed-mult, 1)) steps(1, end) infinite;
+}
+
+@keyframes cyberBeaconBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+/* 4. COSMOS ANIMATIONS (Shooting Meteors, Orbiting Dust & Glowing Nebulae) */
+.cosmos-meteor {
+  position: absolute;
+  width: 160px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(139, 92, 246, 0.8) 50%, transparent 100%);
+  transform: rotate(-38deg);
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.9), 0 0 20px rgba(0, 210, 255, 0.6);
+  animation: cosmosMeteorStreak calc(8s / var(--theme-anim-speed-mult, 1)) ease-out infinite;
+}
+
+@keyframes cosmosMeteorStreak {
+  0%, 78% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(-38deg) scale(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translate3d(40px, 30px, 0) rotate(-38deg) scale(1);
+  }
+  88% {
+    opacity: 0;
+    transform: translate3d(480px, 380px, 0) rotate(-38deg) scale(0.7);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.cosmos-rings-halo {
+  position: absolute;
+  top: 170px;
+  left: 290px;
+  width: 360px;
+  height: 180px;
+  border-radius: 50%;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
+  transform: rotate(-22deg);
+  pointer-events: none;
+  animation: cosmosRingSpin calc(18s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+}
+
+@keyframes cosmosRingSpin {
+  0% { transform: rotate(-22deg) scale(0.96); opacity: 0.5; }
+  100% { transform: rotate(-20deg) scale(1.05); opacity: 0.85; }
+}
+
+.cosmos-nebula-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 75% 65%, rgba(139, 92, 246, 0.16) 0%, transparent 50%),
+              radial-gradient(circle at 25% 35%, rgba(0, 210, 255, 0.18) 0%, transparent 45%);
+  pointer-events: none;
+  animation: cosmosNebulaShift calc(14s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+}
+
+@keyframes cosmosNebulaShift {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.08); }
+}
+
+/* 5. OBSIDIAN ANIMATIONS (Matrix Energy Wave & Corner Ambient Glow) */
+.obsidian-energy-wave {
+  position: absolute;
+  top: -100%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(135deg, 
+    transparent 0%, 
+    rgba(0, 210, 255, 0.04) 48%, 
+    rgba(10, 132, 255, 0.09) 50%, 
+    rgba(0, 210, 255, 0.04) 52%, 
+    transparent 100%);
+  pointer-events: none;
+  animation: obsidianScan calc(10s / var(--theme-anim-speed-mult, 1)) linear infinite;
+}
+
+@keyframes obsidianScan {
+  0% { transform: translate3d(-30%, -30%, 0); }
+  100% { transform: translate3d(30%, 30%, 0); }
+}
+
+.obsidian-corner-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: obsidianBreathe calc(6s / var(--theme-anim-speed-mult, 1)) ease-in-out infinite alternate;
+}
+
+.obsidian-glow-bl {
+  bottom: -150px;
+  left: -150px;
+  background: rgba(0, 210, 255, 0.12);
+}
+
+.obsidian-glow-tr {
+  top: -150px;
+  right: -150px;
+  background: rgba(10, 132, 255, 0.12);
+  animation-delay: -3s;
+}
+
+@keyframes obsidianBreathe {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  100% { transform: scale(1.2); opacity: 0.9; }
+}
+
+/* --------------------------------------------------------------------------
+   Liquid Glassmorphism UI Polish (Acrylic & Frosted Glass Everywhere)
+   -------------------------------------------------------------------------- */
+.app-header {
+  background: rgba(8, 11, 18, 0.45) !important;
+  backdrop-filter: blur(calc(var(--glass-blur, 20px) + 4px)) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur, 20px) + 4px)) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+.app-sidebar {
+  background: rgba(8, 12, 20, 0.48) !important;
+  backdrop-filter: blur(calc(var(--glass-blur, 20px) + 8px)) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur, 20px) + 8px)) saturate(180%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2), inset -1px 0 0 rgba(255, 255, 255, 0.03) !important;
+}
+
+.card, .preset-card, .dash-metric-card, .preset-card-concise, .dash-quick-panel, .dashboard-hardware-strip {
+  background: rgba(13, 17, 28, 0.48) !important;
+  backdrop-filter: blur(var(--glass-blur, 20px)) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur, 20px)) saturate(165%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.card:hover, .preset-card:hover, .dash-metric-card:hover, .preset-card-concise:hover {
+  background: rgba(19, 26, 44, 0.65) !important;
+  border-color: rgba(0, 210, 255, 0.4) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 24px rgba(0, 210, 255, 0.16) !important;
+}
+
+.modal-container, .diff-modal-box {
+  background: rgba(12, 16, 26, 0.78) !important;
+  backdrop-filter: blur(calc(var(--glass-blur, 20px) + 12px)) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur, 20px) + 12px)) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+

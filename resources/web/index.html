@@ -1,0 +1,2718 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows Config Studio</title>
+  <link rel="icon" type="image/png" href="/branding/wcs_logo_transparent.png">
+  <link rel="shortcut icon" href="/branding/app_icon.ico">
+  <link rel="stylesheet" href="/web/css/style.css">
+  <link rel="stylesheet" href="/web/css/themes.css">
+</head>
+<body>
+
+  <!-- Dynamic 2D Vector Landscape Background Layer with GPU Composited Particles -->
+  <div id="themeBackgroundLayer" class="theme-bg-layer theme-bg-fuji" aria-hidden="true">
+    <div id="themeAnimationLayer" class="theme-anim-layer"></div>
+  </div>
+
+  <!-- Top App Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <img src="/branding/wcs_logo_transparent.png" alt="WCS Logo" class="brand-logo" id="headerLogo">
+      <div>
+        <div class="brand-title">WINDOWS <span>CONFIG STUDIO</span></div>
+        <div class="brand-subtitle" id="headerAppVersion">Windows Tweaker</div>
+      </div>
+    </div>
+    <div class="header-status-group">
+      <div id="headerGpuPill" class="status-pill green">
+        <img src="/icons/gpu.png" style="width: 14px; height: 14px;">
+        <span id="gpuStatusText">GPU: MSI HIGH</span>
+      </div>
+      <div id="headerTimerPill" class="status-pill cyan">
+        <img src="/icons/clock.png" style="width: 14px; height: 14px;">
+        <span id="timerStatusText">1.000 ms</span>
+      </div>
+      <div id="headerOpenSourcePill" class="status-pill cyan" title="Windows Config Studio — Полностью открытый исходный код">
+        <img src="/icons/star.png" style="width: 14px; height: 14px;">
+        <span>OPEN SOURCE</span>
+      </div>
+      <!-- Update Pill (hidden until an update is available) -->
+      <div id="headerUpdatePill" class="status-pill update-pill pulse-glow" style="display: none; cursor: pointer;" onclick="openUpdateModal()" title="Доступно обновление программы! Нажмите для подробностей.">
+        <span class="update-pulse-ring"></span>
+        <img src="/icons/zap.png" style="width: 14px; height: 14px;">
+        <span>Обновление <span id="headerUpdateVer">v3.5</span></span>
+      </div>
+      <button class="icon-btn" onclick="openAboutModal()" title="О программе"><img src="/icons/info.png" style="width: 14px; height: 14px; opacity: 0.85;"></button>
+    </div>
+  </header>
+
+  <!-- App Body: Sidebar + Main Content -->
+  <div class="app-body">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+      <div id="sidebarIndicator" class="sidebar-indicator"></div>
+      <div class="nav-group-title">ОБЗОР</div>
+      <div class="nav-item active" onclick="switchTab(0)">
+        <div class="nav-icon-badge"><img src="/icons/gauge.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Главная</span>
+          <span class="nav-subtitle">Дашборд и пресеты</span>
+        </div>
+      </div>
+
+      <div class="nav-group-title">ОПТИМИЗАЦИЯ</div>
+      <div class="nav-item" onclick="switchTab(1)">
+        <div class="nav-icon-badge"><img src="/icons/clock.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Процессор и задержка</span>
+          <span class="nav-subtitle">Таймер 0.5 мс и такты</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(2)">
+        <div class="nav-icon-badge"><img src="/icons/gamepad.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Игровой режим</span>
+          <span class="nav-subtitle">Авто-буст и каталог игр</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(3)">
+        <div class="nav-icon-badge"><img src="/icons/ram.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Очистка памяти</span>
+          <span class="nav-subtitle">Освобождение ОЗУ</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(4)">
+        <div class="nav-icon-badge"><img src="/icons/gpu.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Видеокарта и графика</span>
+          <span class="nav-subtitle">HAGS, сглаживание и отклик</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(5)">
+        <div class="nav-icon-badge"><img src="/icons/bolt.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Прерывания устройств</span>
+          <span class="nav-subtitle">Режим MSI для GPU и звука</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(6)">
+        <div class="nav-icon-badge"><img src="/icons/network.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Сеть и мышь</span>
+          <span class="nav-subtitle">Снижение пинга и отклик</span>
+        </div>
+      </div>
+
+      <div class="nav-group-title">ИНСТРУМЕНТЫ</div>
+      <div class="nav-item" onclick="switchTab(7)">
+        <div class="nav-icon-badge"><img src="/icons/settings.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Оптимизация Windows</span>
+          <span class="nav-subtitle">Службы и твики системы</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(8)">
+        <div class="nav-icon-badge"><img src="/icons/startup_rocket.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Автозагрузка</span>
+          <span class="nav-subtitle">Программы при старте</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(9)">
+        <div class="nav-icon-badge"><img src="/icons/broom.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Очистка диска</span>
+          <span class="nav-subtitle">Временные файлы и кэш</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(10)">
+        <div class="nav-icon-badge"><img src="/icons/restore_checkpoint.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Точки восстановления</span>
+          <span class="nav-subtitle">Безопасный откат системы</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(11)">
+        <div class="nav-icon-badge"><img src="/icons/setting_tray.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Настройки</span>
+          <span class="nav-subtitle">Автозапуск и темы оформления</span>
+        </div>
+      </div>
+
+      <div class="nav-item" onclick="switchTab(12)">
+        <div class="nav-icon-badge"><img src="/icons/zap.png" class="nav-icon"></div>
+        <div class="nav-text">
+          <span class="nav-title">Центр обновлений</span>
+          <span class="nav-subtitle">Проверка новых версий</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer author-signature" id="sidebarAuthor">open source</div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-content">
+
+      <!-- TAB 0: ДАШБОРД (ГЛАВНАЯ) -->
+      <section id="tab-0" class="tab-pane active dashboard-pane">
+        <div class="content-header dashboard-header">
+          <div class="content-header-icon"><img src="/icons/gauge.png"></div>
+          <div class="content-header-text">
+            <h1>Главная панель управления</h1>
+            <p>Единый центр мониторинга задержки, системных ресурсов и профилей оптимизации</p>
+          </div>
+          <div class="dashboard-header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="refreshDashboardMetrics()" title="Обновить системную телеметрию">
+              <img src="/icons/refresh.png" style="width:13px;height:13px;"> Обновить
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. Hero Telemetry & Latency Grid (4 Metric Cards) -->
+        <div class="dashboard-metrics-grid">
+          <div class="dash-metric-card">
+            <div class="dash-metric-header">
+              <div class="dash-metric-icon-badge"><img src="/icons/clock.png"></div>
+              <span id="dashTimerBadge" class="dash-metric-badge badge-locked">0.500 ms</span>
+            </div>
+            <div class="dash-metric-title">Системный таймер</div>
+            <div id="dashTimerVal" class="dash-metric-value">0.500 <small>ms</small></div>
+            <div id="dashTimerSub" class="dash-metric-sub">Зафиксирован на 0.500 мс</div>
+            <div class="dash-metric-action">
+              <button class="dash-metric-btn" onclick="toggleTimerLock()">
+                <img src="/icons/clock.png" style="width:13px;height:13px;"> Переключить Lock
+              </button>
+            </div>
+          </div>
+
+          <div class="dash-metric-card">
+            <div class="dash-metric-header">
+              <div class="dash-metric-icon-badge"><img src="/icons/ram.png"></div>
+              <span id="dashRamBadge" class="dash-metric-badge badge-active">ОЗУ</span>
+            </div>
+            <div class="dash-metric-title">Оперативная память</div>
+            <div id="dashRamVal" class="dash-metric-value">-- <small>%</small></div>
+            <div class="dash-metric-progress-bg">
+              <div id="dashRamBar" class="dash-metric-progress-bar" style="width: 0%;"></div>
+            </div>
+            <div id="dashRamSub" class="dash-metric-sub">Занято: -- GB / -- GB</div>
+            <div class="dash-metric-action">
+              <button class="dash-metric-btn" onclick="cleanAllMemory()">
+                <img src="/icons/broom.png" style="width:13px;height:13px;"> Очистить RAM
+              </button>
+            </div>
+          </div>
+
+          <div class="dash-metric-card">
+            <div class="dash-metric-header">
+              <div class="dash-metric-icon-badge"><img src="/icons/star.png"></div>
+              <span id="dashProfileBadge" class="dash-metric-badge badge-locked">MAX FPS</span>
+            </div>
+            <div class="dash-metric-title">Активный профиль</div>
+            <div id="dashActiveProfileName" class="dash-metric-value" style="font-size: 20px;">Competitive Games</div>
+            <div id="dashActiveCount" class="dash-metric-sub">Все оптимизации активны</div>
+            <div class="dash-metric-action">
+              <button class="dash-metric-btn" onclick="previewPreset('EsportsUltra')">
+                <img src="/icons/sliders.png" style="width:13px;height:13px;"> Инспектор Diff
+              </button>
+            </div>
+          </div>
+
+          <div class="dash-metric-card">
+            <div class="dash-metric-header">
+              <div class="dash-metric-icon-badge"><img src="/icons/bolt.png"></div>
+              <span id="dashMsiBadge" class="dash-metric-badge badge-locked">DIRECT IRQ</span>
+            </div>
+            <div class="dash-metric-title">Шина прерываний MSI</div>
+            <div id="dashMsiVal" class="dash-metric-value" style="font-size: 21px;">Direct MSI</div>
+            <div id="dashMsiSub" class="dash-metric-sub">GPU и Audio разгружены</div>
+            <div class="dash-metric-action">
+              <button class="dash-metric-btn" onclick="switchTab(5)">
+                <img src="/icons/bolt.png" style="width:13px;height:13px;"> Настроить MSI
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hardware Load Telemetry Charts -->
+        <div class="dashboard-section-title" style="margin-top: 26px;">
+          <span><img src="/icons/cpu.png" style="width:16px;height:16px;"> Мониторинг нагрузки CPU и GPU</span>
+          <span class="dash-charts-live-pill"><span class="live-dot-pulse"></span> ТЕЛЕМЕТРИЯ 1000ms</span>
+        </div>
+
+        <div class="dashboard-charts-grid">
+          <!-- CPU Card -->
+          <div class="dash-chart-card">
+            <div class="dash-chart-header">
+              <div class="dash-chart-left">
+                <div class="dash-chart-icon-badge cpu-badge"><img src="/icons/cpu.png"></div>
+                <div class="dash-chart-title-group">
+                  <div class="dash-chart-device-title" id="dashCpuName">Процессор (CPU)</div>
+                  <div class="dash-chart-device-specs" id="dashCpuSpecs">Инициализация ядер...</div>
+                </div>
+              </div>
+              <div class="dash-chart-right">
+                <div class="dash-chart-val-wrap">
+                  <span class="dash-chart-big-val" id="dashCpuVal">0%</span>
+                  <span class="dash-chart-badge badge-cpu" id="dashCpuBadge">NORMAL</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-chart-canvas-container">
+              <canvas id="cpuLoadCanvas" class="hardware-chart-canvas"></canvas>
+            </div>
+
+            <div class="dash-chart-footer">
+              <div class="dash-chart-stat-chip">
+                <span class="stat-lbl">Пик</span>
+                <span class="stat-val" id="dashCpuPeak">0%</span>
+              </div>
+              <div class="dash-chart-stat-chip">
+                <span class="stat-lbl">Среднее (30с)</span>
+                <span class="stat-val" id="dashCpuAvg">0%</span>
+              </div>
+              <div class="dash-chart-stat-chip">
+                <span class="stat-lbl">Потоки</span>
+                <span class="stat-val" id="dashCpuCores">--</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- GPU Card -->
+          <div class="dash-chart-card">
+            <div class="dash-chart-header">
+              <div class="dash-chart-left">
+                <div class="dash-chart-icon-badge gpu-badge"><img src="/icons/gpu.png"></div>
+                <div class="dash-chart-title-group">
+                  <div class="dash-chart-device-title" id="dashGpuName">Видеокарта (GPU)</div>
+                  <div class="dash-chart-device-specs" id="dashGpuSpecs">WDDM 3D Engine</div>
+                </div>
+              </div>
+              <div class="dash-chart-right">
+                <div class="dash-chart-val-wrap">
+                  <span class="dash-chart-big-val gpu-val" id="dashGpuVal">0%</span>
+                  <span class="dash-chart-badge badge-gpu" id="dashGpuBadge">IDLE</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-chart-canvas-container">
+              <canvas id="gpuLoadCanvas" class="hardware-chart-canvas"></canvas>
+            </div>
+
+            <div class="dash-chart-footer">
+              <div class="dash-chart-stat-chip">
+                <span class="stat-lbl">Пик</span>
+                <span class="stat-val" id="dashGpuPeak">0%</span>
+              </div>
+              <div class="dash-chart-stat-chip">
+                <span class="stat-lbl">Среднее (30с)</span>
+                <span class="stat-val" id="dashGpuAvg">0%</span>
+              </div>
+              <div class="dash-chart-stat-chip">
+                <span class="stat-lbl">Движок</span>
+                <span class="stat-val">Direct3D</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Concise Presets Section (Мега-краткое описание) -->
+        <div class="dashboard-section-title">
+          <span><img src="/icons/presets.png" style="width:16px;height:16px;"> Профили конфигурации в 1 клик</span>
+          <span style="font-size: 11px; color: var(--text-muted); text-transform: none; font-weight: 500;">Нажмите на карточку для просмотра отличий</span>
+        </div>
+
+        <div class="presets-grid-concise">
+          <div id="card-preset-1" class="preset-card-concise active" onclick="previewPreset('EsportsUltra')">
+            <div class="preset-concise-header">
+              <span class="preset-concise-title"><img src="/icons/crosshair.png"> Competitive Games</span>
+              <span class="preset-concise-badge badge-blue">MAX FPS</span>
+            </div>
+            <p class="preset-concise-desc">Бескомпромиссная минимизация input lag: таймер 0.500 мс, приоритет квантов 0x26, Direct MSI прерывания и TCP NoDelay.</p>
+            <div class="preset-concise-tags">
+              <span class="preset-tag">0.500 ms</span>
+              <span class="preset-tag">Кванты 0x26</span>
+              <span class="preset-tag">Direct MSI</span>
+              <span class="preset-tag">TCP NoDelay</span>
+              <span class="preset-tag">Anti-Cheat Safe</span>
+            </div>
+            <div class="preset-concise-actions" onclick="event.stopPropagation()">
+              <button class="btn btn-primary btn-apply-main" onclick="applyPreset('EsportsUltra')">
+                <img src="/icons/zap.png" style="width:13px;height:13px;"> Применить
+              </button>
+              <button class="btn-diff-icon" onclick="previewPreset('EsportsUltra')" title="Просмотреть отличия пресета">
+                <img src="/icons/search.png" style="width:13px;height:13px;">
+              </button>
+            </div>
+          </div>
+
+          <div id="card-preset-2" class="preset-card-concise" onclick="previewPreset('CompetitiveGaming')">
+            <div class="preset-concise-header">
+              <span class="preset-concise-title"><img src="/icons/flame.png"> Balance</span>
+              <span class="preset-concise-badge badge-green">БАЛАНС</span>
+            </div>
+            <p class="preset-concise-desc">Низкая задержка и стабильный фреймтайм с сохранением фоновых служб для Discord, OBS, стриминга и повседневных задач.</p>
+            <div class="preset-concise-tags">
+              <span class="preset-tag">0.500 ms</span>
+              <span class="preset-tag">Stream-Safe</span>
+              <span class="preset-tag">Direct MSI</span>
+              <span class="preset-tag">GameDVR Off</span>
+              <span class="preset-tag">Полная совместимость</span>
+            </div>
+            <div class="preset-concise-actions" onclick="event.stopPropagation()">
+              <button class="btn btn-primary btn-apply-main" onclick="applyPreset('CompetitiveGaming')">
+                <img src="/icons/zap.png" style="width:13px;height:13px;"> Применить
+              </button>
+              <button class="btn-diff-icon" onclick="previewPreset('CompetitiveGaming')" title="Просмотреть отличия пресета">
+                <img src="/icons/search.png" style="width:13px;height:13px;">
+              </button>
+            </div>
+          </div>
+
+          <div id="card-preset-3" class="preset-card-concise" onclick="previewPreset('WindowsDefault')">
+            <div class="preset-concise-header">
+              <span class="preset-concise-title"><img src="/icons/refresh.png"> Windows Default</span>
+              <span class="preset-concise-badge badge-gray">СБРОС</span>
+            </div>
+            <p class="preset-concise-desc">Полный возврат всех параметров ядра, сетевого стека, таймера и служб к заводским эталонным настройкам Microsoft.</p>
+            <div class="preset-concise-tags">
+              <span class="preset-tag">15.6 ms Float</span>
+              <span class="preset-tag">Базовый CPU</span>
+              <span class="preset-tag">Базовая сеть</span>
+              <span class="preset-tag">Заводские службы</span>
+            </div>
+            <div class="preset-concise-actions" onclick="event.stopPropagation()">
+              <button class="btn btn-secondary btn-apply-main" onclick="applyPreset('WindowsDefault')">
+                <img src="/icons/refresh.png" style="width:13px;height:13px;"> Сбросить
+              </button>
+              <button class="btn-diff-icon" onclick="previewPreset('WindowsDefault')" title="Просмотреть отличия пресета">
+                <img src="/icons/search.png" style="width:13px;height:13px;">
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Fast Tweak Toggles (Прямой доступ с Дашборда) -->
+        <div class="dash-quick-panel">
+          <div class="dashboard-section-title" style="margin-bottom: 4px;">
+            <span><img src="/icons/sliders.png" style="width:16px;height:16px;"> Быстрые переключатели оптимизации</span>
+            <span style="font-size: 11px; color: var(--text-dim); text-transform: none; font-weight: normal;">Мгновенная активация ключевых esports-твиков</span>
+          </div>
+
+          <div class="dash-quick-grid">
+            <div class="dash-quick-item">
+              <div class="dash-quick-item-info">
+                <img src="/icons/clock.png">
+                <div>
+                  <div class="dash-quick-name">Лок таймера 0.500 ms</div>
+                  <div class="dash-quick-sub">Минимальный инпут-лаг ввода</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="dash-quick-timerLock" onchange="toggleTimerLock()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="dash-quick-item">
+              <div class="dash-quick-item-info">
+                <img src="/icons/gpu.png">
+                <div>
+                  <div class="dash-quick-name">Прямые прерывания GPU</div>
+                  <div class="dash-quick-sub">MSI Mode видеокарты High</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="dash-quick-gpuMsi" onchange="toggleTweak('gpuMsiMode', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="dash-quick-item">
+              <div class="dash-quick-item-info">
+                <img src="/icons/audio.png">
+                <div>
+                  <div class="dash-quick-name">Прямые прерывания звука</div>
+                  <div class="dash-quick-sub">MSI Mode звуковой карты</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="dash-quick-audioMsi" onchange="toggleTweak('audioMsiMode', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="dash-quick-item">
+              <div class="dash-quick-item-info">
+                <img src="/icons/network.png">
+                <div>
+                  <div class="dash-quick-name">TCP NoDelay (Nagle Off)</div>
+                  <div class="dash-quick-sub">Мгновенная отправка пакетов</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="dash-quick-tcpNoDelay" onchange="toggleTweak('tcpNoDelay', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="dash-quick-item">
+              <div class="dash-quick-item-info">
+                <img src="/icons/cpu_cores.png">
+                <div>
+                  <div class="dash-quick-name">Парковка ядер (Unpark)</div>
+                  <div class="dash-quick-sub">100% активных ядер CPU</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="dash-quick-coreParking" onchange="toggleTweak('disableCoreParking', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="dash-quick-item">
+              <div class="dash-quick-item-info">
+                <img src="/icons/ram.png">
+                <div>
+                  <div class="dash-quick-name">Приоритет памяти для игр</div>
+                  <div class="dash-quick-sub">LargeSystemCache = 0</div>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="dash-quick-largeSystemCache" onchange="toggleTweak('largeSystemCacheDisabled', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Platform & Telemetry Footer Strip -->
+        <div class="dashboard-hardware-strip">
+          <div class="dash-hw-item">
+            <span class="dash-hw-dot"></span>
+            <span>Статус задержки: <strong>Zero Latency Ready</strong></span>
+          </div>
+          <div class="dash-hw-item">
+            <span>Процессор: <strong id="dashHwCpu">Scanning...</strong></span>
+          </div>
+          <div class="dash-hw-item">
+            <span>Видеокарта: <strong id="dashHwGpu">Scanning...</strong></span>
+          </div>
+          <div class="dash-hw-item">
+            <span>ОС: <strong id="dashHwOs">Windows NT</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: ПРОЦЕССОР & ТАЙМЕР -->
+      <section id="tab-1" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/clock.png"></div>
+          <div class="content-header-text">
+            <h1>Задержка системы и процессор</h1>
+            <p>Снижение задержки ввода мыши и стабилизация тактовой частоты ядер</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">High-Precision Windows Timer Resolution</div>
+          <div class="card-desc">По умолчанию Windows опрашивает события таймера раз в 15.625 мс. Лок на 0.5 мс снижает задержку мыши до минимума.</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <div class="status-pill cyan" style="height: 36px;">
+              <span id="tab1TimerDisplay">Текущее системное разрешение: 1.000 ms</span>
+            </div>
+            <button id="btnTimerLock" class="btn btn-primary" onclick="toggleTimerLock()"><img src="/icons/bolt.png" style="width: 14px; height: 14px; margin-right: 6px; vertical-align: middle;">Заблокировать на 0.500 ms</button>
+          </div>
+        </div>
+
+        <div class="tweak-list">
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/timer_tick.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Отключение динамических тиков ядра (Dynamic Tick)</span>
+                <span class="tweak-details">Фиксирует системный шаг таймера Windows, предотвращая задержки при переходе процессора между энергосберегающими состояниями.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-disableDynamicTick" onchange="toggleTweak('disableDynamicTick', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/pulse.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Отключение синтетического таймера HPET</span>
+                <span class="tweak-details">Переводит системное время Windows на прямое обращение к быстрым регистрам процессора (TSC), снижая задержку ядра.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-usePlatformClockNo" onchange="toggleTweak('usePlatformClockNo', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/flame.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Схема питания «Максимальная производительность»</span>
+                <span class="tweak-details">Активирует схему электропитания Windows без снижения частот ядер процессора и задержек пробуждения шины.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-ultimatePowerPlan" onchange="toggleTweak('ultimatePowerPlan', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/cpu_cores.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Отключение парковки ядер процессора (Core Unparking)</span>
+                <span class="tweak-details">Предотвращает уход ядер процессора в глубокий сон, устраняя задержки пробуждения потоков в напряженных игровых сценах.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-disableCoreParking" onchange="toggleTweak('disableCoreParking', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/metronome.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Аппаратный тактовый таймер процессора (Platform Tick)</span>
+                <span class="tweak-details">Синхронизирует системный таймер ядра с аппаратным тактовым генератором материнской платы для ровного фреймтайма.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-usePlatformTickNo" onchange="toggleTweak('usePlatformTickNo', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/bolt.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Отключение энергосбережения процессов (Power Throttling)</span>
+                <span class="tweak-details">Запрещает Windows принудительно занижать приоритет и частоты для игровых процессов и лаунчеров (EcoQoS).</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-powerThrottling" onchange="toggleTweak('powerThrottling', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/sliders.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Ускоренная загрузка Windows (без анимации)</span>
+                <span class="tweak-details">Отключает круговой анимационный индикатор загрузки при старте, ускоряя инициализацию видеодрайвера.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-bootuxDisabled" onchange="toggleTweak('bootuxDisabled', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/threads_quantum.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Приоритет активного окна (кванты CPU)</span>
+                <span class="tweak-details">Выделяет максимальное процессорное время переднему плану (игре) по сравнению с фоновыми задачами.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-win32PrioritySeparation" onchange="toggleTweak('win32PrioritySeparation', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/ram_lock.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Удержание компонентов системы в ОЗУ</span>
+                <span class="tweak-details">Запрещает сброс драйверов и ядра Windows в файл подкачки, ускоряя доступ к ним из физической памяти.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-disablePagingExecutive" onchange="toggleTweak('disablePagingExecutive', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/ram.png"></div>
+              <div class="tweak-text">
+                <span class="tweak-name">Приоритет оперативной памяти для игр</span>
+                <span class="tweak-details">Ограничивает разрастание кэша файловой системы (LargeSystemCache = 0), резервируя максимум свободной оперативной памяти для игр.</span>
+              </div>
+            </div>
+            <div class="tweak-controls">
+              <label class="switch">
+                <input type="checkbox" id="tweak-largeSystemCacheDisabled" onchange="toggleTweak('largeSystemCacheDisabled', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: ИГРОВОЙ РЕЖИМ (DYNAMIC GAME BOOST) -->
+      <section id="tab-2" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/gamepad.png"></div>
+          <div class="content-header-text">
+            <h1>Игровой режим (Dynamic Game Boost)</h1>
+            <p>Автоматическое обнаружение игр, оптимизация приоритета процессов и блокировка задержек в реальном времени</p>
+          </div>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+            <div id="gameBoostStatusPill" class="status-pill cyan">
+              <span id="gameBoostStatusDot" class="status-dot cyan"></span>
+              <span id="gameBoostStatusText">Ожидание запуска игры...</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="scanInstalledGamesUI()" title="Пересканировать установленные игры" style="flex-shrink: 0;">
+              <img src="/icons/refresh.png" style="width: 13px; height: 13px;"> Обновить каталог
+            </button>
+          </div>
+        </div>
+
+        <!-- Master Switch & Boost Options Card -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <div class="card-title" style="margin-bottom: 4px;">Фоновый мониторинг игровых процессов</div>
+              <div class="card-desc">При запуске любой из найденных игр WCS автоматически активирует высокий приоритет, освобождает Standby-кэш и фиксирует таймер на 0.500 мс.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="cfgGameBoostEnabled" onchange="toggleGameBoostSetting('enabled', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-subtle);">
+            <label class="flyout-checkbox">
+              <input type="checkbox" id="cfgBoostHighPriority" onchange="toggleGameBoostSetting('highPriority', this.checked)">
+              <span class="checkbox-label">Высокий приоритет CPU (High Priority)</span>
+            </label>
+            <label class="flyout-checkbox">
+              <input type="checkbox" id="cfgBoostStandbyPurge" onchange="toggleGameBoostSetting('standbyPurge', this.checked)">
+              <span class="checkbox-label">Сброс Standby-памяти при старте матча</span>
+            </label>
+            <label class="flyout-checkbox">
+              <input type="checkbox" id="cfgBoostLockTimer" onchange="toggleGameBoostSetting('lockTimer', this.checked)">
+              <span class="checkbox-label">Блокировка таймера 0.500 мс в игре</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Catalog Toolbar: Search & Add Custom Game -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 260px;">
+            <input type="text" id="gameSearchInput" class="input-text" placeholder="Поиск среди найденных игр..." oninput="filterGamePosters(this.value)" style="flex: 1; max-width: 380px;">
+            <span id="installedGamesCountBadge" class="status-pill gray" style="font-size: 11px;">0 игр найдено</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input type="text" id="customGameInput" class="input-text" placeholder="Имя процесса (например, game.exe)" style="width: 240px; font-size: 12px;" onkeydown="if(event.key==='Enter') addCustomGameFromInput()">
+            <button class="btn btn-primary btn-sm" onclick="addCustomGameFromInput()">
+              + Добавить игру
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-IN-A-ROW VERTICAL GAME POSTER GRID (Screen 5) -->
+        <div class="game-poster-grid" id="gamePosterGrid">
+          <!-- Populated dynamically via scanInstalledGamesUI() -->
+        </div>
+      </section>
+
+      <!-- TAB 3: MEMORY CLEANER -->
+      <section id="tab-3" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/ram.png"></div>
+          <div class="content-header-text">
+            <h1>Memory Cleaner</h1>
+            <p>Интеллектуальная очистка и мониторинг оперативной памяти в реальном времени</p>
+          </div>
+        </div>
+
+        <!-- Live RAM Usage Gauge Card -->
+        <div class="card mem-monitor-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="status-dot-emerald" id="tabMemStatusDot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);"></span>
+              <span class="card-title" style="margin: 0; font-size: 14px;">Физическая память (RAM)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span id="tabMemTitleVal" style="color: #fff; font-weight: 700; font-size: 13px; font-feature-settings: 'tnum' 1;">0.0 ГБ / 0.0 ГБ</span>
+              <span id="tabMemPercentBadge" class="badge-load" style="font-size: 11px; padding: 2px 8px;">0%</span>
+            </div>
+          </div>
+
+          <!-- Segmented Bar -->
+          <div class="segmented-bar" style="height: 18px; border-radius: 9px; margin: 10px 0;">
+            <div id="tabMemBarUsed" class="segment-used" style="width: 0%;"></div>
+            <div id="tabMemBarStandby" class="segment-standby" style="width: 0%;"></div>
+          </div>
+
+          <!-- 3-Segment Legend -->
+          <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); margin-top: 6px;">
+            <span style="color: var(--accent-primary); display: flex; align-items: center; gap: 5px;">
+              ● В работе: <b id="tabMemLegUsed" style="color: #fff; font-feature-settings: 'tnum' 1;">0%</b>
+            </span>
+            <span style="color: #c084fc; display: flex; align-items: center; gap: 5px;">
+              ● Standby кэш: <b id="tabMemLegStandby" style="color: #fff; font-feature-settings: 'tnum' 1;">0%</b>
+            </span>
+            <span style="color: #34d399; display: flex; align-items: center; gap: 5px;">
+              ● Свободно: <b id="tabMemLegFree" style="color: #fff; font-feature-settings: 'tnum' 1;">0%</b>
+            </span>
+          </div>
+
+          <!-- Pagefile Bar -->
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.06);">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--text-dim);">
+              <span>Файл подкачки (Pagefile):</span>
+              <span id="tabMemPagefileVal" style="font-weight: 600; color: #a78bfa; font-feature-settings: 'tnum' 1;">0.0 ГБ / 0.0 ГБ (0%)</span>
+            </div>
+            <div class="segmented-bar" style="height: 5px; margin: 5px 0 0 0; border-radius: 3px;">
+              <div id="tabMemBarPagefile" style="background: linear-gradient(90deg, #8b5cf6, #c084fc); width: 0%; height: 100%; transition: width 0.35s ease; border-radius: 3px;"></div>
+            </div>
+          </div>
+
+          <!-- 4 Stat Tiles Grid -->
+          <div class="stat-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px;">
+            <div class="stat-tile" style="padding: 10px 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: var(--radius-md);">
+              <div class="stat-label" style="font-size: 11px; color: var(--text-dim);"><span style="color: #60a5fa;">●</span> Всего памяти</div>
+              <div id="tabMemStatTotal" class="stat-val" style="font-size: 16px; font-weight: 700; color: #cbd5e1; margin-top: 4px;">0.0 ГБ</div>
+            </div>
+            <div class="stat-tile" style="padding: 10px 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: var(--radius-md);">
+              <div class="stat-label" style="font-size: 11px; color: var(--text-dim);"><span style="color: var(--accent-primary);">●</span> В работе</div>
+              <div id="tabMemStatInUse" class="stat-val" style="font-size: 16px; font-weight: 700; color: var(--accent-primary); margin-top: 4px;">0.00 ГБ</div>
+            </div>
+            <div class="stat-tile" style="padding: 10px 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: var(--radius-md);">
+              <div class="stat-label" style="font-size: 11px; color: var(--text-dim);"><span style="color: var(--accent-emerald, #10b981);">●</span> Доступно</div>
+              <div id="tabMemStatFree" class="stat-val" style="font-size: 16px; font-weight: 700; color: #34d399; margin-top: 4px;">0.00 ГБ</div>
+            </div>
+            <div class="stat-tile" style="padding: 10px 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: var(--radius-md);">
+              <div class="stat-label" style="font-size: 11px; color: var(--text-dim);"><span style="color: #c084fc;">●</span> Кэш Standby</div>
+              <div id="tabMemStatStandby" class="stat-val" style="font-size: 16px; font-weight: 700; color: #c084fc; margin-top: 4px;">0.00 ГБ</div>
+            </div>
+          </div>
+
+          <!-- Secondary Metrics & Status Strip -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 8px 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: var(--radius-md);">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 11.5px;">
+              <span class="status-dot-emerald" style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);"></span>
+              <span id="tabMemStatusText" style="color: #e2e8f0; font-weight: 500;">Память оптимизирована</span>
+            </div>
+            <div style="display: flex; gap: 12px; font-size: 11.5px; color: var(--text-dim);">
+              <span>Пик: <b id="tabMemStatPeak" style="color: #fbbf24; font-feature-settings: 'tnum' 1;">0%</b></span>
+              <span>Освобождено: <b id="tabMemStatFreed" style="color: var(--accent-primary); font-feature-settings: 'tnum' 1;">0 Б</b></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Action Row -->
+        <div class="card" style="margin-top: 14px;">
+          <div class="card-title">Быстрые действия оптимизации</div>
+          <div class="card-desc">Мгновенный сброс кэшей страниц и рабочих наборов всех системных и фоновых процессов.</div>
+          <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" style="flex: 1; min-width: 200px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="cleanAllMemory()">
+              <img src="/icons/broom.png" style="width: 14px; height: 14px;"> Полная очистка памяти
+            </button>
+            <button class="btn btn-secondary" style="flex: 1; min-width: 180px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="purgeStandbyList()">
+              <img src="/icons/refresh.png" style="width: 14px; height: 14px;"> Сброс Standby кэша
+            </button>
+            <button class="btn btn-secondary" style="flex: 1; min-width: 180px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="trimWorkingSets()">
+              <img src="/icons/copy.png" style="width: 14px; height: 14px;"> Сброс Working Sets
+            </button>
+          </div>
+        </div>
+
+        <!-- Automatic Optimization Config Card -->
+        <div class="card" style="margin-top: 14px;">
+          <div class="card-title">
+            <img src="/icons/mem_config.png" style="width:18px;height:18px;object-fit:contain;" alt="">
+            <span>Автоматическая оптимизация ОЗУ (Auto-Clean)</span>
+          </div>
+          <div class="card-desc">Фоновый мониторинг использования оперативной памяти с интеллектуальным триггером по расписанию и перегрузке.</div>
+
+          <div class="tweak-list" style="margin-top: 14px; display: flex; flex-direction: column; gap: 14px;">
+            
+            <!-- Threshold Row -->
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: var(--radius-md); padding: 12px 16px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="tweak-icon-badge"><img src="/icons/mem_threshold.png"></div>
+                  <div>
+                    <span class="tweak-name" style="font-weight: 600;">Авто-очистка по порогу заполнения ОЗУ</span>
+                    <span class="tweak-details" style="display: block;">Срабатывает при превышении заданного процента занятой памяти</span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <b id="lblMemThresholdVal" style="color: var(--accent-primary); font-size: 14px; font-feature-settings: 'tnum' 1;">80%</b>
+                  <label class="switch">
+                    <input type="checkbox" id="cfgMemAutoThreshold">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Range Slider -->
+              <input type="range" id="rngMemThreshold" min="60" max="95" value="80" class="mem-range" style="width: 100%; margin: 8px 0;" oninput="onMemThresholdSlider(this.value)">
+
+              <!-- Quick Preset Pills [70%] [75%] [80%] [85%] [90%] -->
+              <div class="preset-pills-row" style="display: flex; gap: 8px; margin-top: 6px;">
+                <button type="button" class="preset-pill mem-thresh-pill" data-val="70" onclick="setMemThresholdPill(70)">70%</button>
+                <button type="button" class="preset-pill mem-thresh-pill" data-val="75" onclick="setMemThresholdPill(75)">75%</button>
+                <button type="button" class="preset-pill mem-thresh-pill" data-val="80" onclick="setMemThresholdPill(80)">80%</button>
+                <button type="button" class="preset-pill mem-thresh-pill" data-val="85" onclick="setMemThresholdPill(85)">85%</button>
+                <button type="button" class="preset-pill mem-thresh-pill" data-val="90" onclick="setMemThresholdPill(90)">90%</button>
+              </div>
+
+              <div class="card-divider" style="height: 1px; background: rgba(255, 255, 255, 0.05); margin: 10px 0;"></div>
+
+              <!-- Sub-toggles -->
+              <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-dim); cursor: pointer;">
+                  <input type="checkbox" id="cfgMemTrimOnThreshold" checked style="accent-color: var(--accent-primary);">
+                  <span>Сброс рабочих наборов процессов</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-dim); cursor: pointer;">
+                  <input type="checkbox" id="cfgMemClearOnThreshold" checked style="accent-color: var(--accent-primary);">
+                  <span>Очистка кэша Standby</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Interval Row -->
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: var(--radius-md); padding: 12px 16px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="tweak-icon-badge"><img src="/icons/mem_schedule.png"></div>
+                  <div>
+                    <span class="tweak-name" style="font-weight: 600;">Периодическая авто-очистка по таймеру</span>
+                    <span class="tweak-details" style="display: block;">Регулярная фоновая выгрузка кэша и оптимизация процессов через фиксированный интервал</span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <b id="lblMemIntervalVal" style="color: #c084fc; font-size: 14px; font-feature-settings: 'tnum' 1;">15 мин</b>
+                  <label class="switch">
+                    <input type="checkbox" id="cfgMemAutoInterval">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Range Slider -->
+              <input type="range" id="rngMemInterval" min="3" max="120" value="15" class="mem-range" style="width: 100%; margin: 8px 0;" oninput="onMemIntervalSlider(this.value)">
+
+              <!-- Quick Preset Pills [15м] [30м] [45м] [60м] -->
+              <div class="preset-pills-row" style="display: flex; gap: 8px; margin-top: 6px;">
+                <button type="button" class="preset-pill mem-int-pill" data-val="15" onclick="setMemIntervalPill(15)">15м</button>
+                <button type="button" class="preset-pill mem-int-pill" data-val="30" onclick="setMemIntervalPill(30)">30м</button>
+                <button type="button" class="preset-pill mem-int-pill" data-val="45" onclick="setMemIntervalPill(45)">45м</button>
+                <button type="button" class="preset-pill mem-int-pill" data-val="60" onclick="setMemIntervalPill(60)">60м</button>
+              </div>
+
+              <div class="card-divider" style="height: 1px; background: rgba(255, 255, 255, 0.05); margin: 10px 0;"></div>
+
+              <!-- Sub-toggles -->
+              <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-dim); cursor: pointer;">
+                  <input type="checkbox" id="cfgMemTrimOnInterval" checked style="accent-color: var(--accent-primary);">
+                  <span>Сброс рабочих наборов по расписанию</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-dim); cursor: pointer;">
+                  <input type="checkbox" id="cfgMemClearOnInterval" checked style="accent-color: var(--accent-primary);">
+                  <span>Очистка Standby по расписанию</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Save Button -->
+          <div style="margin-top: 16px;">
+            <button class="btn btn-primary" style="width: 100%; height: 42px; font-size: 13.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="saveMemCleanerConfig()">
+              <img src="/icons/check.png" style="width: 14px; height: 14px; margin-right: 6px;"> Сохранить параметры очистки
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: ГРАФИКА & РЕНДЕР -->
+      <section id="tab-4" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/gpu.png"></div>
+          <div class="content-header-text">
+            <h1>Графика &amp; Рендер</h1>
+            <p>Аппаратное планирование GPU, оконная оптимизация FSO и приоритеты MMCSS</p>
+          </div>
+        </div>
+
+        <!-- Card 1: Аппаратное ускорение графики -->
+        <div class="card">
+          <div class="card-title">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/icons/gpu.png" style="width: 16px; height: 16px;">
+              <span>Аппаратное ускорение графики</span>
+            </span>
+          </div>
+          <div class="card-desc">Аппаратное планирование видеопамяти и прямые MSI-векторы прерываний для видеоядра и звукового тракта.</div>
+
+          <div class="tweak-list">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/bolt.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Аппаратное ускорение графики (HAGS)</span>
+                  <span class="tweak-details">Передает диспетчеризацию видеопамяти напрямую графическому процессору для снижения задержек рендеринга.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-hagsEnabled" onchange="toggleTweak('hagsEnabled', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/audio.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Прямые прерывания звуковой карты (MSI Mode)</span>
+                  <span class="tweak-details">Переводит аудиоконтроллер на режим Message Signaled Interrupts, устраняя треск звука и рассинхрон при высокой нагрузке.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-audioMsiMode" onchange="toggleTweak('audioMsiMode', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/gpu_interrupt.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Прямые прерывания видеокарты (MSI Mode)</span>
+                  <span class="tweak-details" id="gpuDetectedDesc">Переводит видеокарту на современные MSI-прерывания с высоким приоритетом, снижая задержки DPC и устраняя микрофризы.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-gpuMsiMode" onchange="toggleTweak('gpuMsiMode', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Оконный режим и оптимизация игр -->
+        <div class="card">
+          <div class="card-title">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/icons/fullscreen_exclusive.png" style="width: 16px; height: 16px;">
+              <span>Оконный режим и оптимизация игр</span>
+            </span>
+          </div>
+          <div class="card-desc">Чистый эксклюзивный доступ к дисплею без задержек композитора DWM и отключение фоновой видеозаписи.</div>
+
+          <div class="tweak-list">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/fullscreen_exclusive.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Прямой полноэкранный режим (FSO)</span>
+                  <span class="tweak-details">Отключает принудительную оконную оптимизацию Windows, возвращая чистый эксклюзивный Fullscreen.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-disableFullscreenOptimizations" onchange="toggleTweak('disableFullscreenOptimizations', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/game_dvr.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключение фоновой записи GameDVR</span>
+                  <span class="tweak-details">Отключает постоянную фоновую видеозапись и оверлей Xbox, освобождая ресурсы видеокарты.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-disableGameDVR" onchange="toggleTweak('disableGameDVR', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Планировщик MMCSS & Мультимедиа -->
+        <div class="card">
+          <div class="card-title">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/icons/sliders.png" style="width: 16px; height: 16px;">
+              <span>Планировщик MMCSS &amp; Мультимедиа</span>
+            </span>
+          </div>
+          <div class="card-desc">Выделение 100% ресурсов центрального процессора под соревновательные игры и отключение сетевого троттлинга.</div>
+
+          <div class="tweak-list">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/gauge.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Игровой приоритет мультимедиа (MMCSS)</span>
+                  <span class="tweak-details">Предоставляет 100% ресурсов планировщика потоков и снимает искусственные лимиты Windows для игровых процессов.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-mmcssGamesPriority" onchange="toggleTweak('mmcssGamesPriority', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/network_throttle.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Снятие сетевого ограничения Windows</span>
+                  <span class="tweak-details">Отключает троттлинг сетевых пакетов Windows при одновременной нагрузке на процессор.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-disableNetworkThrottling" onchange="toggleTweak('disableNetworkThrottling', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: ПРЕРЫВАНИЯ MSI -->
+      <section id="tab-5" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/bolt.png"></div>
+          <div class="content-header-text">
+            <h1>Интерактивный менеджер прерываний (MSI &amp; IRQ Priority)</h1>
+            <p>Перевод аппаратных устройств в режим Message Signaled Interrupts для снижения DPC-задержек и устранения микрофризов</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span>Управление прерываниями PCI-устройств</span>
+              <span id="msiCountBadge" class="status-pill cyan" style="font-size: 11px; padding: 2px 10px;">0 / 0 MSI активно</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm" onclick="applyMsiEsportsProfile()"><img src="/icons/bolt.png" style="width: 13px; height: 13px; margin-right: 6px;">Применить рекомендуемый профиль MSI</button>
+              <button class="btn btn-secondary btn-sm" onclick="loadMsiDevices()"><img src="/icons/refresh.png" style="width: 13px;"> Обновить</button>
+            </div>
+          </div>
+          <div class="card-desc">Перевод устройств в режим прямых векторных прерываний MSI (Message Signaled Interrupts) снижает DPC-задержки и устраняет статтеры при опросе мыши и отрисовке кадров GPU.</div>
+
+          <!-- Top Action Bar: Filters & Search -->
+          <div class="msi-toolbar" style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div class="msi-category-pills">
+                <button class="msi-pill-btn active" data-category="ALL" onclick="setMsiCategoryFilter('ALL')">Все</button>
+                <button class="msi-pill-btn" data-category="GPU" onclick="setMsiCategoryFilter('GPU')"><img src="/icons/gpu.png" style="width: 13px; height: 13px; margin-right: 4px;">GPU</button>
+                <button class="msi-pill-btn" data-category="Network" onclick="setMsiCategoryFilter('Network')"><img src="/icons/network.png" style="width: 13px; height: 13px; margin-right: 4px;">Сеть</button>
+                <button class="msi-pill-btn" data-category="USB" onclick="setMsiCategoryFilter('USB')"><img src="/icons/clean_usb.png" style="width: 13px; height: 13px; margin-right: 4px;">USB</button>
+                <button class="msi-pill-btn" data-category="Audio" onclick="setMsiCategoryFilter('Audio')"><img src="/icons/audio.png" style="width: 13px; height: 13px; margin-right: 4px;">Звук</button>
+                <button class="msi-pill-btn" data-category="Storage" onclick="setMsiCategoryFilter('Storage')"><img src="/icons/ssd_drive.png" style="width: 13px; height: 13px; margin-right: 4px;">Диски</button>
+              </div>
+            </div>
+            <div class="msi-search-wrapper" style="position: relative;">
+              <input type="text" id="msiSearchInput" class="input-box" placeholder="Поиск по названию устройства, шине, Hardware ID..." oninput="filterMsiDevices()" style="width: 100%; padding-left: 36px;">
+              <img src="/icons/search.png" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 14px; opacity: 0.5; pointer-events: none;">
+            </div>
+          </div>
+
+          <!-- Devices list container -->
+          <div id="msiDeviceList" class="msi-devices-grid" style="margin-top: 14px;">
+            <!-- Dynamically populated by renderMsiDevices -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: СЕТЬ И МЫШЬ -->
+      <section id="tab-6" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/network.png"></div>
+          <div class="content-header-text">
+            <h1>Пинг &amp; Инпут-лаг</h1>
+            <p>Снижение сетевых задержек TCP, линейный отклик периферии 1:1 и отключение фоновой телеметрии</p>
+          </div>
+        </div>
+
+        <!-- Card 1: Сетевой стек и оптимизация TCP -->
+        <div class="card">
+          <div class="card-title">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/icons/network.png" style="width: 16px; height: 16px;">
+              <span>Сетевой стек и оптимизация TCP (Снижение пинга)</span>
+            </span>
+          </div>
+          <div class="card-desc">Мгновенная отправка пакетов без ожидания заполнения буфера (Nagle OFF), автоподстройка TCP и сброс сетевого кэша.</div>
+
+          <div class="tweak-list">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/tcp_nodelay.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Мгновенная отправка пакетов (TCP NoDelay)</span>
+                  <span class="tweak-details">Отключает алгоритм задержки Nagle, отправляя сетевые пакеты в онлайн-играх без ожидания буфера.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-tcpNoDelay" onchange="toggleTweak('tcpNoDelay', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/tcp_autotuning.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Автоподстройка окна приема TCP (Auto-Tuning)</span>
+                  <span class="tweak-details">Оптимизирует размер окна TCP и распределяет сетевой трафик между ядрами процессора без очередей пакетов.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-tcpAutoTuning" onchange="toggleTweak('tcpAutoTuning', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/network.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Оптимальное время жизни пакетов (TTL 64)</span>
+                  <span class="tweak-details">Устанавливает эталонное значение времени жизни IP-пакетов (TTL = 64), снижая задержки маршрутизации на игровых серверах.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-defaultTTL64" onchange="toggleTweak('defaultTTL64', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="font-size: 12px; color: var(--text-dim);">Удаление зависших сетевых маршрутов и очистка локального кэша DNS:</div>
+            <button class="btn btn-secondary btn-sm" onclick="flushDNS()"><img src="/icons/refresh.png" style="width: 13px;"> Очистить DNS-кэш (Flush DNS)</button>
+          </div>
+        </div>
+
+        <!-- Card 2: Высокоточный киберспортивный ввод (Инпут-лаг) -->
+        <div class="card" style="margin-top: 18px;">
+          <div class="card-title">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/icons/mouse.png" style="width: 16px; height: 16px;">
+              <span>Высокоточный киберспортивный отклик ввода</span>
+            </span>
+          </div>
+          <div class="card-desc">Аппаратное выравнивание кривой опроса мыши без срывов сенсора и минимизация задержки опроса клавиш.</div>
+
+          <div class="tweak-list">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/mouse.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Прямой отклик мыши 1:1 (кривая MarkC)</span>
+                  <span class="tweak-details">Полностью отключает системное ускорение (акселерацию) курсора, обеспечивая честное движение 1:1.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-flatMouseCurve" onchange="toggleTweak('flatMouseCurve', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/keyboard.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Максимальная отзывчивость клавиатуры</span>
+                  <span class="tweak-details">Устанавливает минимальную задержку перед повтором нажатий и максимальную скорость повтора клавиш.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-keyboardMaxSpeed" onchange="toggleTweak('keyboardMaxSpeed', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Фоновая телеметрия и отчеты об ошибках -->
+        <div class="card" style="margin-top: 18px;">
+          <div class="card-title">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/icons/no_telemetry.png" style="width: 16px; height: 16px;">
+              <span>Фоновая телеметрия и отчеты об ошибках</span>
+            </span>
+          </div>
+          <div class="card-desc">Отключение скрытых процессов сбора диагностических данных Microsoft, вызывающих микрофризы и кражи процессорного времени.</div>
+
+          <div class="tweak-list">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/no_telemetry.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключение сбора телеметрии и слежения</span>
+                  <span class="tweak-details">Останавливает фоновую службу сбора диагностических данных (DiagTrack), устраняя фоновую активность диска и процессора.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-disableTelemetry" onchange="toggleTweak('disableTelemetry', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/no_error_report.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключение службы отчетов об ошибках Windows</span>
+                  <span class="tweak-details">Отключает службу Windows Error Reporting, исключая микрозависания системы при программных предупреждениях.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="tweak-disableErrorReporting" onchange="toggleTweak('disableErrorReporting', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: ОПТИМИЗАЦИЯ WINDOWS -->
+      <section id="tab-7" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/settings.png"></div>
+          <div class="content-header-text">
+            <h1>Инженерия операционной системы</h1>
+            <p>Низкоуровневая архитектурная оптимизация Windows, службы, безопасность, UWP Debloat и очистка</p>
+          </div>
+        </div>
+
+        <!-- Sub-tabs nav -->
+        <div class="subtabs-bar">
+          <button class="subtab-btn active" onclick="switchSubTab(0)"><img src="/icons/settings.png" style="width: 14px;"> Система</button>
+          <button class="subtab-btn" onclick="switchSubTab(1)"><img src="/icons/shield.png" style="width: 14px;"> Безопасность</button>
+          <button class="subtab-btn" onclick="switchSubTab(2)"><img src="/icons/win11_logo.png" style="width: 14px;"> Windows 11</button>
+          <button class="subtab-btn" onclick="switchSubTab(3)"><img src="/icons/context_menu.png" style="width: 14px; height: 14px;"> Контекстное меню</button>
+          <button class="subtab-btn" onclick="switchSubTab(4)"><img src="/icons/sliders.png" style="width: 14px;"> Службы</button>
+          <button class="subtab-btn" onclick="switchSubTab(5)"><img src="/icons/apps.png" style="width: 14px;"> Приложения</button>
+        </div>
+
+        <!-- SUBTAB 0: СИСТЕМА -->
+        <div id="subtab-0" class="subtab-pane active">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 600; color: #fff;">Системные параметры ядра и проводника Windows</div>
+            <button class="btn btn-primary btn-sm" onclick="applySystemTweaks()"><img src="/icons/bolt.png" style="width: 13px; height: 13px; margin-right: 6px;">Применить все твики системы</button>
+          </div>
+
+          <!-- Flyout 1: OS Perf -->
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/os_perf.png"></div>
+              <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-os-perf', this)"><span style="font-size: 9px; opacity: 0.8; margin-right: 4px;">▼</span> Настройки</button>
+              <div class="tweak-text">
+                <span class="tweak-name">Обеспечить максимальную производительность ОС</span>
+                <span class="tweak-details">Отключает визуальные задержки, анимации окон и эффекты теней для максимального отклика.</span>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="sys-maxOsPerf" onchange="toggleSingleSystemTweak('maxOsPerf', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div id="flyout-os-perf" class="flyout-panel">
+            <div style="font-size: 12px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">Дополнительные параметры максимальной производительности ОС:</div>
+            <div class="flyout-grid">
+              <label class="custom-checkbox"><input type="checkbox" id="os-waitScreenLock" onchange="toggleOsSubTweak('waitScreenLock', this.checked)"><span class="checkbox-label">Ожидание блокировки экрана</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-noMonitorOff" onchange="toggleOsSubTweak('noMonitorOff', this.checked)"><span class="checkbox-label">Не выключать монитор</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-noDiskSpindown" onchange="toggleOsSubTweak('noDiskSpindown', this.checked)"><span class="checkbox-label">Не выключать диски</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-ultimatePowerPlan" onchange="toggleOsSubTweak('ultimatePowerPlan', this.checked)"><span class="checkbox-label">Максимальная схема питания</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-alwaysUnloadDll" onchange="toggleOsSubTweak('alwaysUnloadDll', this.checked)"><span class="checkbox-label">Автовыгрузка DLL из памяти</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-nonPagedPoolFix" onchange="toggleOsSubTweak('nonPagedPoolFix', this.checked)"><span class="checkbox-label">Исправление пула памяти</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-disableBackgroundApps" onchange="toggleOsSubTweak('disableBackgroundApps', this.checked)"><span class="checkbox-label">Отключить фоновые приложения</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-disableAutoWindowsUpdate" onchange="toggleOsSubTweak('disableAutoWindowsUpdate', this.checked)"><span class="checkbox-label">Отключить автообновление ОС</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-disableDriverUpdates" onchange="toggleOsSubTweak('disableDriverUpdates', this.checked)"><span class="checkbox-label">Отключить обновление драйверов</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="os-disableReservedStorage" onchange="toggleOsSubTweak('disableReservedStorage', this.checked)"><span class="checkbox-label">Отключить зарезервированное хранилище</span></label>
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 8px;">
+              <button class="btn btn-primary btn-sm" onclick="applyAllOsSubTweaks(true)">Включить все</button>
+              <button class="btn btn-secondary btn-sm" onclick="applyAllOsSubTweaks(false)">Выключить все</button>
+            </div>
+          </div>
+
+          <!-- Flyout 2: SSD Perf -->
+          <div class="tweak-row" style="margin-top: 8px;">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/ssd_drive.png"></div>
+              <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-ssd-perf', this)"><span style="font-size: 9px; opacity: 0.8; margin-right: 4px;">▼</span> Настройки</button>
+              <div class="tweak-text">
+                <span class="tweak-name">Обеспечить максимальную производительность SSD</span>
+                <span class="tweak-details">Отключает создание коротких имен 8.3 и обновление меток последнего доступа NTFS.</span>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="sys-maxSsdPerf" onchange="toggleSingleSystemTweak('maxSsdPerf', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div id="flyout-ssd-perf" class="flyout-panel">
+            <div style="font-size: 12px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">Дополнительные параметры производительности SSD:</div>
+            <div class="flyout-grid">
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-disablePrefetchSuperfetch" onchange="toggleSsdSubTweak('disablePrefetchSuperfetch', this.checked)"><span class="checkbox-label">Отключить Prefetcher и Superfetch</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-disableBootDefrag" onchange="toggleSsdSubTweak('disableBootDefrag', this.checked)"><span class="checkbox-label">Отключить дефрагментацию системных файлов</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-disableLastAccess" onchange="toggleSsdSubTweak('disableLastAccess', this.checked)"><span class="checkbox-label">Отключить метку времени последнего доступа</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-disable8dot3Names" onchange="toggleSsdSubTweak('disable8dot3Names', this.checked)"><span class="checkbox-label">Отключить создание коротких имен 8.3</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-enableTrimSupport" onchange="toggleSsdSubTweak('enableTrimSupport', this.checked)"><span class="checkbox-label">Включить поддержку функции TRIM</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-disableLowDiskSpaceChecks" onchange="toggleSsdSubTweak('disableLowDiskSpaceChecks', this.checked)"><span class="checkbox-label">Отключить проверки нехватки места</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-largeSystemCache" onchange="toggleSsdSubTweak('largeSystemCache', this.checked)"><span class="checkbox-label">Игровой режим кэша (LargeSystemCache = 0)</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-disablePagingExecutive" onchange="toggleSsdSubTweak('disablePagingExecutive', this.checked)"><span class="checkbox-label">Блокировка ядра NT в RAM (DisablePagingExecutive)</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="ssd-win32PrioritySeparation" onchange="toggleSsdSubTweak('win32PrioritySeparation', this.checked)"><span class="checkbox-label">Приоритет квантов CPU играм (Win32 0x26)</span></label>
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 8px;">
+              <button class="btn btn-primary btn-sm" onclick="applyAllSsdSubTweaks(true)">Включить все</button>
+              <button class="btn btn-secondary btn-sm" onclick="applyAllSsdSubTweaks(false)">Выключить все</button>
+            </div>
+          </div>
+
+          <!-- Standard System Tweaks -->
+          <div class="tweak-list" style="margin-top: 8px;">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/cpu_power.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключить Power Throttling процессора (Блокировка EcoQoS)</span>
+                  <span class="tweak-details">Принудительно предотвращает перевод игровых потоков в режим энергосбережения.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sys-disablePowerThrottling" onchange="toggleSingleSystemTweak('disablePowerThrottling', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/no_hibernate.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключить гибернацию и быстрый запуск (Fast Startup)</span>
+                  <span class="tweak-details">Удаляет hiberfil.sys, освобождая гигабайты SSD и исключая рассинхронизацию таймеров QPC/HPET.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sys-disableHibernation" onchange="toggleSingleSystemTweak('disableHibernation', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/svchost_stack.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Включить группировку процессов SvcHost</span>
+                  <span class="tweak-details">Оптимизирует расход оперативной памяти путем объединения системных служб в хост-процессы.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sys-svchostGrouping" onchange="toggleSingleSystemTweak('svchostGrouping', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/task_end.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Автоматическое завершение зависших приложений</span>
+                  <span class="tweak-details">Устраняет зависания при закрытии не отвечающих программ и игр.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sys-autoEndTasks" onchange="toggleSingleSystemTweak('autoEndTasks', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/bsod_halt.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключить автоматическую перезагрузку Windows при BSOD</span>
+                  <span class="tweak-details">Позволяет зафиксировать код ошибки синего экрана для точной диагностики.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sys-disableBsodAutoRestart" onchange="toggleSingleSystemTweak('disableBsodAutoRestart', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/powershell_fast.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Включить ускорение выполнения сценариев PowerShell</span>
+                  <span class="tweak-details">Выполняет предварительную компиляцию NGen для мгновенного выполнения скриптов.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sys-powerShellAcceleration" onchange="toggleSingleSystemTweak('powerShellAcceleration', this.checked)"><span class="slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 1: БЕЗОПАСНОСТЬ -->
+        <div id="subtab-1" class="subtab-pane" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 600; color: #fff;">Параметры безопасности и подавления слежки</div>
+            <button class="btn btn-primary btn-sm" onclick="applySecurityTweaks()"><img src="/icons/shield.png" style="width: 13px; height: 13px; margin-right: 6px;">Применить настройки безопасности</button>
+          </div>
+
+          <!-- Flyout 3: Telemetry -->
+          <div class="tweak-row">
+            <div class="tweak-info">
+              <div class="tweak-icon-badge"><img src="/icons/privacy_all.png"></div>
+              <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-telem', this)"><span style="font-size: 9px; opacity: 0.8; margin-right: 4px;">▼</span> Настройки</button>
+              <div class="tweak-text">
+                <span class="tweak-name">Все виды телеметрий Windows и MSOffice</span>
+                <span class="tweak-details">Подавление телеметрии Visual Studio, Office, NVIDIA, рекламного ID и диагностических журналов.</span>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="sec-disableAllTelemetry" onchange="toggleSingleSecurityTweak('disableAllTelemetry', this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div id="flyout-telem" class="flyout-panel">
+            <div style="font-size: 12px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">Дополнительные параметры телеметрии:</div>
+            <div class="flyout-grid">
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableAdvertisingId" onchange="toggleTelemSubTweak('disableAdvertisingId', this.checked)"><span class="checkbox-label">Рекламный идентификатор</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableSettingSync" onchange="toggleTelemSubTweak('disableSettingSync', this.checked)"><span class="checkbox-label">Синхронизация настроек Windows</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableVsTelemetry" onchange="toggleTelemSubTweak('disableVsTelemetry', this.checked)"><span class="checkbox-label">Телеметрия Visual Studio</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableOfficeTelemetry" onchange="toggleTelemSubTweak('disableOfficeTelemetry', this.checked)"><span class="checkbox-label">Телеметрия Microsoft Office</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableNvidiaTelemetry" onchange="toggleTelemSubTweak('disableNvidiaTelemetry', this.checked)"><span class="checkbox-label">Телеметрия NVIDIA</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableCeipTasks" onchange="toggleTelemSubTweak('disableCeipTasks', this.checked)"><span class="checkbox-label">Сбор данных CEIP</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableAppInventory" onchange="toggleTelemSubTweak('disableAppInventory', this.checked)"><span class="checkbox-label">Сбор данных о приложениях</span></label>
+              <label class="custom-checkbox"><input type="checkbox" id="telem-disableLocation" onchange="toggleTelemSubTweak('disableLocation', this.checked)"><span class="checkbox-label">Определение местоположения</span></label>
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 8px;">
+              <button class="btn btn-primary btn-sm" onclick="applyAllTelemetrySubTweaks(true)">Включить все</button>
+              <button class="btn btn-secondary btn-sm" onclick="applyAllTelemetrySubTweaks(false)">Выключить все</button>
+            </div>
+          </div>
+
+          <div class="tweak-list" style="margin-top: 8px;">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/uac_shield.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключить контроль учетных записей (UAC)</span>
+                  <span class="tweak-details">Полное отключение всплывающих затемняющих окон подтверждения запуска от администратора.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sec-disableUAC" onchange="toggleSingleSecurityTweak('disableUAC', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/defender_off.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключить изоляцию ядра VBS &amp; HVCI</span>
+                  <span class="tweak-details">Отключает виртуализацию безопасности ядра Hypervisor-Enforced Code Integrity (+5-15% FPS в соревновательных играх).</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sec-disableVbsHvci" onchange="toggleSingleSecurityTweak('disableVbsHvci', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/meltdown_fix.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключить программные заплатки CPU (Meltdown / Spectre)</span>
+                  <span class="tweak-details">Снимает программное замедление межъядерных вызовов в микрокоде Windows для максимального FPS.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sec-disableCpuMitigations" onchange="toggleSingleSecurityTweak('disableCpuMitigations', this.checked)"><span class="slider"></span></label>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/exe_cert.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Отключить предупреждения безопасности при запуске файлов</span>
+                  <span class="tweak-details">Отключает "Открыть файл - Предупреждение системы безопасности" для скачанных исполняемых файлов.</span>
+                </div>
+              </div>
+              <label class="switch"><input type="checkbox" id="sec-disableExeWarnings" onchange="toggleSingleSecurityTweak('disableExeWarnings', this.checked)"><span class="slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 2: WINDOWS 11 (23H2 / 24H2) -->
+        <div id="subtab-2" class="subtab-content subtab-pane" style="display: none;">
+          <div class="card">
+            <div class="card-title">
+              <span><img src="/icons/shield.png" style="width: 14px; height: 14px; margin-right: 6px; vertical-align: middle;">Оптимизация и приватность Windows 11</span>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" onclick="loadWin11Tweaks()"><img src="/icons/refresh.png" style="width: 13px; height: 13px; margin-right: 6px;">Обновить</button>
+              </div>
+            </div>
+            <div class="card-desc">Хирургическая деактивация фонового телеметрического мусора, Copilot, Windows Recall и спонсорских внедрений через политики GPO без повреждения системных компонентов.</div>
+
+            <!-- Status Banner -->
+            <div id="win11StatusBanner" class="os-info-banner">
+              <div class="os-info-icon">
+                <img src="/icons/info.png" alt="OS Status" />
+              </div>
+              <div class="os-info-content">
+                <div class="os-info-title" id="win11BannerTitle">Определение версии Windows...</div>
+                <div class="os-info-desc" id="win11BannerDesc">Проверка сборки ядра и поддержка политик Windows 11 (23H2 / 24H2).</div>
+              </div>
+              <div id="win11BannerBadge" class="os-info-badge badge-blue">Сборка ...</div>
+            </div>
+
+            <!-- Tweak list container -->
+            <div id="win11TweaksList" class="tweak-list">
+              <!-- Dynamically populated by renderWin11Tweaks -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: КОНТЕКСТНОЕ МЕНЮ -->
+        <div id="subtab-3" class="subtab-pane subtab-content" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #fff;">Интеграция системного контекстного меню Windows Explorer</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Быстрый доступ к утилитам администрирования, хешам, очистке и расширенным операциям (ПКМ / Shift+ПКМ)</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-primary btn-sm" onclick="applyAllContextMenuTweaks(true)"><img src="/icons/bolt.png" style="width: 13px; height: 13px; margin-right: 6px;">Включить все</button>
+              <button class="btn btn-secondary btn-sm" onclick="applyAllContextMenuTweaks(false)">Выключить все</button>
+            </div>
+          </div>
+
+          <!-- Top Action Buttons (Flyouts / Submenus) -->
+          <div class="context-top-actions-container">
+            <!-- 1. Компьютер -->
+            <div class="context-action-item">
+              <div class="context-action-row">
+                <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-ctx-computer', this)">
+                  <span class="flyout-arrow">▼</span> Настройки
+                </button>
+                <span class="context-action-title"><img src="/icons/pc_desktop.png" class="flyout-btn-icon" alt=""> Добавление пунктов в контекстное меню Компьютера</span>
+              </div>
+              <div id="flyout-ctx-computer" class="flyout-panel">
+                <div class="flyout-list">
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-admin" onchange="toggleContextMenuTweak('comp-admin', this.checked)"><span class="checkbox-label">Администрирование</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-devmgmt" onchange="toggleContextMenuTweak('comp-devmgmt', this.checked)"><span class="checkbox-label">Диспетчер устройств</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-control" onchange="toggleContextMenuTweak('comp-control', this.checked)"><span class="checkbox-label">Панель управления</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-appwiz" onchange="toggleContextMenuTweak('comp-appwiz', this.checked)"><span class="checkbox-label">Программы и компоненты</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-gpedit" onchange="toggleContextMenuTweak('comp-gpedit', this.checked)"><span class="checkbox-label">Редактор групповой политики</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-regedit" onchange="toggleContextMenuTweak('comp-regedit', this.checked)"><span class="checkbox-label">Редактор реестра</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-services" onchange="toggleContextMenuTweak('comp-services', this.checked)"><span class="checkbox-label">Службы</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-diskmgmt" onchange="toggleContextMenuTweak('comp-diskmgmt', this.checked)"><span class="checkbox-label">Управление дисками</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-msconfig" onchange="toggleContextMenuTweak('comp-msconfig', this.checked)"><span class="checkbox-label">Конфигурация системы</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-taskschd" onchange="toggleContextMenuTweak('comp-taskschd', this.checked)"><span class="checkbox-label">Планировщик заданий</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-winver" onchange="toggleContextMenuTweak('comp-winver', this.checked)"><span class="checkbox-label">Версия Windows</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-eventvwr" onchange="toggleContextMenuTweak('comp-eventvwr', this.checked)"><span class="checkbox-label">Просмотр событий</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-sysprops" onchange="toggleContextMenuTweak('comp-sysprops', this.checked)"><span class="checkbox-label">Свойства системы (Классическое)</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-replace-props" onchange="toggleContextMenuTweak('comp-replace-props', this.checked)"><span class="checkbox-label">Замена Свойства на классическое</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-hosts" onchange="toggleContextMenuTweak('comp-hosts', this.checked)"><span class="checkbox-label">Редактирование файла Hosts</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-netconnections" onchange="toggleContextMenuTweak('comp-netconnections', this.checked)"><span class="checkbox-label">Сетевые подключения</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-perfmon" onchange="toggleContextMenuTweak('comp-perfmon', this.checked)"><span class="checkbox-label">Монитор стабильности системы</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-resmon" onchange="toggleContextMenuTweak('comp-resmon', this.checked)"><span class="checkbox-label">Монитор ресурсов системы</span></label>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-comp-godmode" onchange="toggleContextMenuTweak('comp-godmode', this.checked)"><span class="checkbox-label">Все задачи</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-comp-godmode" onclick="toggleContextShift('comp-godmode')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                </div>
+                <div class="flyout-actions-footer">
+                  <a href="javascript:void(0)" class="flyout-action-link" onclick="applyFlyoutGroup('comp', true)">Применить всё</a>
+                  <a href="javascript:void(0)" class="flyout-action-link" onclick="applyFlyoutGroup('comp', false)">Отменить всё</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Рабочий стол (Добавление) -->
+            <div class="context-action-item">
+              <div class="context-action-row">
+                <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-ctx-desktop-add', this)">
+                  <span class="flyout-arrow">▼</span> Настройки
+                </button>
+                <span class="context-action-title"><img src="/icons/desktop_add.png" class="flyout-btn-icon" alt=""> Добавление пунктов в контекстное меню рабочего стола</span>
+              </div>
+              <div id="flyout-ctx-desktop-add" class="flyout-panel">
+                <div class="flyout-list">
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-restart-explorer" onchange="toggleContextMenuTweak('desk-restart-explorer', this.checked)"><span class="checkbox-label">Перезапуск проводника</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-refresh-icons" onchange="toggleContextMenuTweak('desk-refresh-icons', this.checked)"><span class="checkbox-label">Обновить кэш иконок</span></label>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-compact-os" onchange="toggleContextMenuTweak('desk-compact-os', this.checked)"><span class="checkbox-label">Проверка наличия сжатия ОС</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-compact-os" onclick="toggleContextShift('desk-compact-os')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-power-schemes" onchange="toggleContextMenuTweak('desk-power-schemes', this.checked)"><span class="checkbox-label">Схемы управления питанием</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-power-schemes" onclick="toggleContextShift('desk-power-schemes')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-safe-mode" onchange="toggleContextMenuTweak('desk-safe-mode', this.checked)"><span class="checkbox-label">Безопасный режим</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-safe-mode" onclick="toggleContextShift('desk-safe-mode')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-toggle-net" onchange="toggleContextMenuTweak('desk-toggle-net', this.checked)"><span class="checkbox-label">Отключить/Включить интернет</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-toggle-net" onclick="toggleContextShift('desk-toggle-net')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-toggle-hidden" onchange="toggleContextMenuTweak('desk-toggle-hidden', this.checked)"><span class="checkbox-label">Показать/Скрыть скрытые файлы и папки</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-toggle-hidden" onclick="toggleContextShift('desk-toggle-hidden')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-toggle-ext" onchange="toggleContextMenuTweak('desk-toggle-ext', this.checked)"><span class="checkbox-label">Показать/Скрыть расширения файлов</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-toggle-ext" onclick="toggleContextShift('desk-toggle-ext')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-safe-remove" onchange="toggleContextMenuTweak('desk-safe-remove', this.checked)"><span class="checkbox-label">Безопасное извлечение</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-safe-remove" onclick="toggleContextShift('desk-safe-remove')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-screen-clip" onchange="toggleContextMenuTweak('desk-screen-clip', this.checked)"><span class="checkbox-label">Набросок на фрагменте экрана</span></label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-screen-clip" onclick="toggleContextShift('desk-screen-clip')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <div class="flyout-item-with-action">
+                    <label class="custom-checkbox flyout-checkbox">
+                      <input type="checkbox" id="ctx-desk-runas-ti" onchange="toggleContextMenuTweak('desk-runas-ti', this.checked)">
+                      <span class="checkbox-label">Запускать от имени TI <a href="javascript:void(0)" class="context-choose-btn" onclick="openTiChooser(event)">Выбрать</a></span>
+                    </label>
+                    <button type="button" class="context-shift-tag" id="shift-ctx-desk-runas-ti" onclick="toggleContextShift('desk-runas-ti')" title="Shift+ПКМ">Shift+ПКМ</button>
+                  </div>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-theme-toggle" onchange="toggleContextMenuTweak('desk-theme-toggle', this.checked)"><span class="checkbox-label">Тема День/Ночь</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-display-switch" onchange="toggleContextMenuTweak('desk-display-switch', this.checked)"><span class="checkbox-label">Переключение экранов с двумя мониторами</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-screen-off" onchange="toggleContextMenuTweak('desk-screen-off', this.checked)"><span class="checkbox-label">Отключить экран</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-desk-power-menu" onchange="toggleContextMenuTweak('desk-power-menu', this.checked)"><span class="checkbox-label">Выключить или перезагрузить компьютер</span></label>
+                  <label class="custom-checkbox flyout-checkbox">
+                    <input type="checkbox" id="ctx-desk-classic-personalize" onchange="toggleContextMenuTweak('desk-classic-personalize', this.checked)">
+                    <span class="checkbox-label">Улучшить пункт «Персонализация» <a href="javascript:void(0)" class="context-choose-btn" onclick="openPersonalizeChooser(event)">Выбрать</a></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Рабочий стол (Удаление) -->
+            <div class="context-action-item">
+              <div class="context-action-row">
+                <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-ctx-desktop-del', this)">
+                  <span class="flyout-arrow">▼</span> Настройки
+                </button>
+                <span class="context-action-title"><img src="/icons/desktop_remove.png" class="flyout-btn-icon" alt=""> Удаление пунктов в контекстном меню рабочего стола</span>
+              </div>
+              <div id="flyout-ctx-desktop-del" class="flyout-panel">
+                <div class="flyout-list">
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-del-amd" onchange="toggleContextMenuTweak('del-amd', this.checked)"><span class="checkbox-label">AMD Software</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-del-intel" onchange="toggleContextMenuTweak('del-intel', this.checked)"><span class="checkbox-label">Intel Graphics Options</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-del-nvidia" onchange="toggleContextMenuTweak('del-nvidia', this.checked)"><span class="checkbox-label">Nvidia Graphics Options</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-del-vs" onchange="toggleContextMenuTweak('del-vs', this.checked)"><span class="checkbox-label">Visual Studio</span></label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Меню Создать -->
+            <div class="context-action-item">
+              <div class="context-action-row">
+                <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-ctx-new-menu', this)">
+                  <span class="flyout-arrow">▼</span> Настройки
+                </button>
+                <span class="context-action-title"><img src="/icons/new_menu.png" class="flyout-btn-icon" alt=""> Изменение пунктов в контекстном меню Создать</span>
+              </div>
+              <div id="flyout-ctx-new-menu" class="flyout-panel">
+                <div class="flyout-group-box">
+                  <div class="flyout-group-title">Удаление пунктов</div>
+                  <div class="flyout-list">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-del-bmp" onchange="toggleContextMenuTweak('new-del-bmp', this.checked)"><span class="checkbox-label">Точечный рисунок</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-del-contact" onchange="toggleContextMenuTweak('new-del-contact', this.checked)"><span class="checkbox-label">Контакт</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-del-rtf" onchange="toggleContextMenuTweak('new-del-rtf', this.checked)"><span class="checkbox-label">Документ в формате RTF</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-del-txt" onchange="toggleContextMenuTweak('new-del-txt', this.checked)"><span class="checkbox-label">Текстовый документ</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-del-zip" onchange="toggleContextMenuTweak('new-del-zip', this.checked)"><span class="checkbox-label">Сжатая ZIP-папка</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-del-briefcase" checked onchange="toggleContextMenuTweak('new-del-briefcase', this.checked)"><span class="checkbox-label">Портфель</span></label>
+                  </div>
+                </div>
+                <div class="flyout-group-box" style="margin-top: 14px;">
+                  <div class="flyout-group-title">Добавление пунктов</div>
+                  <div class="flyout-list">
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-add-cmd" onchange="toggleContextMenuTweak('new-add-cmd', this.checked)"><span class="checkbox-label">Сценарий Windows (.cmd)</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-add-reg" onchange="toggleContextMenuTweak('new-add-reg', this.checked)"><span class="checkbox-label">Файл реестра (.reg)</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-add-vbs" onchange="toggleContextMenuTweak('new-add-vbs', this.checked)"><span class="checkbox-label">Файл сценария VBScript (.vbs)</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-add-bat" onchange="toggleContextMenuTweak('new-add-bat', this.checked)"><span class="checkbox-label">Пакетный файл Windows (.bat)</span></label>
+                    <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-new-add-ps1" onchange="toggleContextMenuTweak('new-add-ps1', this.checked)"><span class="checkbox-label">Сценарий PowerShell (.ps1)</span></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Удаление мусора -->
+            <div class="context-action-item">
+              <div class="context-action-row">
+                <button class="btn btn-secondary btn-sm flyout-toggle-btn" onclick="toggleFlyout('flyout-ctx-junk-clean', this)">
+                  <span class="flyout-arrow">▼</span> Настройки
+                </button>
+                <span class="context-action-title"><img src="/icons/clean_menu.png" class="flyout-btn-icon" alt=""> Удаление мусорных пунктов из контекстных меню</span>
+              </div>
+              <div id="flyout-ctx-junk-clean" class="flyout-panel">
+                <div class="flyout-list">
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-previous-versions" onchange="toggleContextMenuTweak('junk-previous-versions', this.checked)"><span class="checkbox-label">Восстановить предыдущую версию</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-paint-3d" onchange="toggleContextMenuTweak('junk-paint-3d', this.checked)"><span class="checkbox-label">Изменить в Paint 3D/Print 3D</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-pin-start" onchange="toggleContextMenuTweak('junk-pin-start', this.checked)"><span class="checkbox-label">Закрепить на начальном экране</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-pin-quickaccess" onchange="toggleContextMenuTweak('junk-pin-quickaccess', this.checked)"><span class="checkbox-label">Закрепить на панели быстрого доступа</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-find-music" checked onchange="toggleContextMenuTweak('junk-find-music', this.checked)"><span class="checkbox-label">Поиск музыки в Интернете</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-share" onchange="toggleContextMenuTweak('junk-share', this.checked)"><span class="checkbox-label">Отправить (поделиться)</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-cast" onchange="toggleContextMenuTweak('junk-cast', this.checked)"><span class="checkbox-label">Передать на устройство</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-library" onchange="toggleContextMenuTweak('junk-library', this.checked)"><span class="checkbox-label">Добавить в библиотеку</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-map-drive" onchange="toggleContextMenuTweak('junk-map-drive', this.checked)"><span class="checkbox-label">Подключить/Отключить сетевой диск...</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-extract-all" onchange="toggleContextMenuTweak('junk-extract-all', this.checked)"><span class="checkbox-label">Извлечь все... (Windows 11)</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-add-favorites" onchange="toggleContextMenuTweak('junk-add-favorites', this.checked)"><span class="checkbox-label">Добавить в избранное (Windows 11)</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-bitlocker" onchange="toggleContextMenuTweak('junk-bitlocker', this.checked)"><span class="checkbox-label">Включить BitLocker</span></label>
+                  <label class="custom-checkbox flyout-checkbox"><input type="checkbox" id="ctx-junk-manage" onchange="toggleContextMenuTweak('junk-manage', this.checked)"><span class="checkbox-label">Управление</span></label>
+                </div>
+                <div class="flyout-actions-footer">
+                  <a href="javascript:void(0)" class="flyout-action-link" onclick="applyFlyoutGroup('junk', true)">Применить всё</a>
+                  <a href="javascript:void(0)" class="flyout-action-link" onclick="applyFlyoutGroup('junk', false)">Отменить всё</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Divider & Title -->
+          <div class="context-menu-section-title">
+            <span>Основной набор расширений контекстного меню</span>
+            <span style="font-size: 11px; font-weight: 500; color: var(--text-muted);">Опция «Shift+ПКМ» скрывает пункт из обычного меню и показывает только с зажатым Shift</span>
+          </div>
+
+          <!-- Main 17 Context Menu Tweaks Grid -->
+          <div class="context-menu-grid">
+
+            <!-- 1. Удалить содержимое папки -->
+            <div class="context-tweak-row" id="row-ctx-emptyFolderContent">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-emptyFolderContent" onchange="toggleContextMenuTweak('emptyFolderContent', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Удалить содержимое папки</span>
+                    <span class="context-tweak-desc">Быстрое очищение папки от всех файлов и вложенных каталогов без удаления самой папки.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-emptyFolderContent" onclick="toggleContextShift('emptyFolderContent')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 2. Создать символическую ссылку -->
+            <div class="context-tweak-row" id="row-ctx-symlinkCreate">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-symlinkCreate" onchange="toggleContextMenuTweak('symlinkCreate', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Создать символическую ссылку</span>
+                    <span class="context-tweak-desc">Создание жестких (hardlink) и символических (symlink) ссылок на файлы и каталоги в один клик.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-symlinkCreate" onclick="toggleContextShift('symlinkCreate')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 3. Стать владельцем и получить пользовательский доступ -->
+            <div class="context-tweak-row" id="row-ctx-takeOwnershipUser">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-takeOwnershipUser" onchange="toggleContextMenuTweak('takeOwnershipUser', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Стать владельцем и получить пользовательский доступ</span>
+                    <span class="context-tweak-desc">Получение полных прав владения и доступа текущего пользователя (takeown + icacls) к файлам.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-takeOwnershipUser" onclick="toggleContextShift('takeOwnershipUser')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 4. Стать владельцем и получить доступ администратора -->
+            <div class="context-tweak-row" id="row-ctx-takeOwnershipAdmin">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-takeOwnershipAdmin" onchange="toggleContextMenuTweak('takeOwnershipAdmin', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Стать владельцем и получить доступ администратора</span>
+                    <span class="context-tweak-desc">Предоставление прав Администратора на защищенные системные файлы и папки TrustedInstaller.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-takeOwnershipAdmin" onclick="toggleContextShift('takeOwnershipAdmin')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 5. Запретить/Разрешить приложению доступ в Интернет -->
+            <div class="context-tweak-row" id="row-ctx-blockNetAccess">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-blockNetAccess" onchange="toggleContextMenuTweak('blockNetAccess', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить Запретить/Разрешить приложению доступ в Интернет</span>
+                    <span class="context-tweak-desc">Мгновенная блокировка или разблокировка исходящего и входящего трафика в Windows Firewall.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-blockNetAccess" onclick="toggleContextShift('blockNetAccess')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 6. Открыть окна CMD и PowerShell из любого места -->
+            <div class="context-tweak-row" id="row-ctx-cmdPsAnywhere">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-cmdPsAnywhere" onchange="toggleContextMenuTweak('cmdPsAnywhere', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункты Открыть окна CMD и PowerShell из любого места</span>
+                    <span class="context-tweak-desc">Быстрый запуск командной строки и консоли PowerShell с повышенными правами в текущей папке.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-cmdPsAnywhere" onclick="toggleContextShift('cmdPsAnywhere')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 7. Установить CAB -->
+            <div class="context-tweak-row" id="row-ctx-installCab">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-installCab" onchange="toggleContextMenuTweak('installCab', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Установить CAB</span>
+                    <span class="context-tweak-desc">Инсталляция пакетов обновлений .cab через Dism /Online /Add-Package без консольных команд.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-installCab" onclick="toggleContextShift('installCab')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 8. Хеш-суммы файла -->
+            <div class="context-tweak-row" id="row-ctx-hashFile">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-hashFile" onchange="toggleContextMenuTweak('hashFile', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Хеш-суммы файла</span>
+                    <span class="context-tweak-desc">Мгновенное вычисление и отображение SHA256, MD5 и SHA1 через CertUtil.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-hashFile" onclick="toggleContextShift('hashFile')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 9. Сжать отдельно файл/директорию -->
+            <div class="context-tweak-row" id="row-ctx-compactSeparate">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-compactSeparate" onchange="toggleContextMenuTweak('compactSeparate', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Сжать отдельно файл/директорию</span>
+                    <span class="context-tweak-desc">Аппаратное сжатие NTFS/CompactOS (XPRESS8K / LZX) для экономии места на диске.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-compactSeparate" onclick="toggleContextShift('compactSeparate')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 13. Копировать в буфер на изображениях -->
+            <div class="context-tweak-row" id="row-ctx-copyImageBuffer">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-copyImageBuffer" onchange="toggleContextMenuTweak('copyImageBuffer', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Копировать в буфер на изображениях</span>
+                    <span class="context-tweak-desc">Быстрое копирование растрового содержимого картинки напрямую в системный буфер обмена.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-copyImageBuffer" onclick="toggleContextShift('copyImageBuffer')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 14. Удалить окончательно -->
+            <div class="context-tweak-row" id="row-ctx-permanentDelete">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-permanentDelete" onchange="toggleContextMenuTweak('permanentDelete', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Удалить окончательно</span>
+                    <span class="context-tweak-desc">Удаление файла или директории мимо Корзины без возможности восстановления.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-permanentDelete" onclick="toggleContextShift('permanentDelete')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+
+            <!-- 16. Очистка системы, папок и реестра от мусора -->
+            <div class="context-tweak-row" id="row-ctx-cleanJunkContext">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-cleanJunkContext" onchange="toggleContextMenuTweak('cleanJunkContext', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Очистка системы, папок и реестра от мусора</span>
+                    <span class="context-tweak-desc">Интеграция в контекстное меню проводника запуска комплексной очистки WCS.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-cleanJunkContext" onclick="toggleContextShift('cleanJunkContext')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+            <!-- 17. Диспетчер задач в контекстное меню -->
+            <div class="context-tweak-row" id="row-ctx-taskMgrContext">
+              <div class="context-tweak-main">
+                <label class="custom-checkbox context-checkbox">
+                  <input type="checkbox" id="ctx-taskMgrContext" onchange="toggleContextMenuTweak('taskMgrContext', this.checked)">
+                  <span class="checkbox-label">
+                    <span class="context-tweak-title">Добавить пункт Диспетчер задач в контекстное меню</span>
+                    <span class="context-tweak-desc">Быстрый вызов Task Manager из контекстного меню рабочего стола и проводника.</span>
+                  </span>
+                </label>
+              </div>
+              <div class="context-tweak-action">
+                <button type="button" class="context-shift-tag" id="shift-ctx-taskMgrContext" onclick="toggleContextShift('taskMgrContext')" title="Отображать только при удержании клавиши Shift (Shift+ПКМ)">Shift+ПКМ</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SUBTAB 4: СЛУЖБЫ -->
+        <div id="subtab-4" class="subtab-pane" style="display: none;">
+          <div style="display: flex; gap: 10px; margin-bottom: 14px; align-items: center;">
+            <input type="text" id="serviceSearch" class="input-box" placeholder="Поиск по службам..." oninput="filterServices(this.value)">
+            <button class="btn btn-primary btn-sm" onclick="disableRecommendedServices()">Отключить рекомендуемые</button>
+            <button class="btn btn-secondary btn-sm" onclick="enableAllServices()">Включить все службы</button>
+          </div>
+          <div id="servicesList">
+            <!-- Dynamically populated 2-column grid -->
+          </div>
+        </div>
+
+        <!-- SUBTAB 5: ПРИЛОЖЕНИЯ -->
+        <div id="subtab-5" class="subtab-pane" style="display: none;">
+          <div style="display: flex; gap: 10px; margin-bottom: 14px; align-items: center;">
+            <input type="text" id="appxSearch" class="input-box" placeholder="Поиск по UWP приложениям..." oninput="filterAppx(this.value)">
+            <button class="btn btn-secondary btn-sm" onclick="selectAllAppx(true)">Выбрать все</button>
+            <button class="btn btn-secondary btn-sm" onclick="selectAllAppx(false)">Снять выбор</button>
+            <button class="btn btn-primary btn-sm" onclick="uninstallSelectedAppx()">Удалить выбранные</button>
+            <button class="btn btn-secondary btn-sm" style="color: #f87171;" onclick="uninstallAllAppx()">Удалить все</button>
+          </div>
+          <div id="appxCategoriesGrid" class="appx-categories-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-height: 520px; overflow-y: auto;">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: АВТОЗАГРУЗКА (STARTUP MANAGER) -->
+      <section id="tab-8" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/startup_rocket.png"></div>
+          <div class="content-header-text">
+            <h1>Менеджер автозагрузки Windows</h1>
+            <p>Контроль точек автозапуска, реестра Run и планировщика задач без повреждения путей</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: flex; align-items: center; gap: 6px;"><img src="/icons/startup_rocket.png" style="width: 16px;"> Менеджер автозагрузки Windows</span>
+              <span id="startupCountBadge" class="status-pill cyan" style="font-size: 11px; padding: 2px 10px;">0 / 0 активно</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn btn-secondary btn-sm" onclick="loadStartupItems()"><img src="/icons/refresh.png" style="width: 13px;"> Обновить</button>
+            </div>
+          </div>
+          <div class="card-desc">Контроль всех точек автозапуска Windows (HKCU/HKLM Run, WOW6432Node и папки автозагрузки). Безопасное включение/отключение без повреждения путей и удаление нежелательных служб и приложений.</div>
+
+          <!-- Search and Filter Bar -->
+          <div class="startup-toolbar" style="margin-top: 14px; position: relative;">
+            <input type="text" id="startupSearchInput" class="input-box" placeholder="Поиск по названию программы, издателю или пути..." oninput="filterStartupItems()" style="width: 100%; padding-left: 36px;">
+            <img src="/icons/search.png" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 14px; opacity: 0.5; pointer-events: none;">
+          </div>
+
+          <!-- Items container -->
+          <div id="startupList" class="startup-items-grid" style="margin-top: 14px;">
+            <!-- Dynamically populated by renderStartupItems -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 9: ОЧИСТКА ДИСКА (SYSTEM CLEANER) -->
+      <section id="tab-9" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/broom.png"></div>
+          <div class="content-header-text">
+            <h1>Очистка и оптимизация диска</h1>
+            <p>Выборочная очистка кэшей, журналов событий, дампов и глубокое сжатие системных хранилищ</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span style="display: flex; align-items: center; gap: 8px;"><img src="/icons/broom.png" style="width: 16px; height: 16px;"> Выборочная очистка системных кэшей и временных файлов</span>
+            <div class="card-title-right" style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" onclick="selectAllCleanup(true)">Выбрать все</button>
+              <button class="btn btn-secondary btn-sm" onclick="selectAllCleanup(false)">Снять все</button>
+              <button id="btnExecuteCleanup" class="btn btn-primary btn-sm" onclick="executeCleanup()">Запустить очистку</button>
+            </div>
+          </div>
+          <div id="cleanupCheckboxesGrid" class="flyout-grid" style="margin-top: 14px;">
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanTempFiles" onchange="setCleanupOption('cleanTempFiles', this.checked)"><span class="checkbox-label"><img src="/icons/clean_temp.png" class="cleanup-item-icon" alt="">Временные файлы (%TEMP%, Windows\Temp)</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanExplorerThumbnails" onchange="setCleanupOption('cleanExplorerThumbnails', this.checked)"><span class="checkbox-label"><img src="/icons/clean_thumb.png" class="cleanup-item-icon" alt="">Кэш эскизов Проводника (Thumbnails)</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanSoftwareDistribution" onchange="setCleanupOption('cleanSoftwareDistribution', this.checked)"><span class="checkbox-label"><img src="/icons/clean_update.png" class="cleanup-item-icon" alt="">Кэш обновлений SoftwareDistribution</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanEventLogs" onchange="setCleanupOption('cleanEventLogs', this.checked)"><span class="checkbox-label"><img src="/icons/clean_events.png" class="cleanup-item-icon" alt="">Журналы событий Windows (Event Logs)</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanBrowserCache" onchange="setCleanupOption('cleanBrowserCache', this.checked)"><span class="checkbox-label"><img src="/icons/clean_browser.png" class="cleanup-item-icon" alt="">Кэш браузеров (Chrome, Edge, Brave)</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanDefenderCache" onchange="setCleanupOption('cleanDefenderCache', this.checked)"><span class="checkbox-label"><img src="/icons/clean_defender.png" class="cleanup-item-icon" alt="">Кэш Microsoft Defender</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanGpuCache" onchange="setCleanupOption('cleanGpuCache', this.checked)"><span class="checkbox-label"><img src="/icons/clean_shader.png" class="cleanup-item-icon" alt="">Кэш шейдеров GPU (DirectX / Vulkan / NVIDIA / AMD)</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanDiagnosticLogs" onchange="setCleanupOption('cleanDiagnosticLogs', this.checked)"><span class="checkbox-label"><img src="/icons/clean_diag.png" class="cleanup-item-icon" alt="">Логи диагностики и сбора дампов</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanUsbHistory" onchange="setCleanupOption('cleanUsbHistory', this.checked)"><span class="checkbox-label"><img src="/icons/clean_usb.png" class="cleanup-item-icon" alt="">История подключений USB устройств</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanWindowsInstallCache" onchange="setCleanupOption('cleanWindowsInstallCache', this.checked)"><span class="checkbox-label"><img src="/icons/clean_installer.png" class="cleanup-item-icon" alt="">Кэш инсталляций Windows</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanSystemReports" onchange="setCleanupOption('cleanSystemReports', this.checked)"><span class="checkbox-label"><img src="/icons/clean_dumps.png" class="cleanup-item-icon" alt="">Отчеты об ошибках и дампах памяти</span></label>
+            <label class="custom-checkbox"><input type="checkbox" id="cln-cleanOfficeCache" onchange="setCleanupOption('cleanOfficeCache', this.checked)"><span class="checkbox-label"><img src="/icons/clean_office.png" class="cleanup-item-icon" alt="">Временный кэш MS Office</span></label>
+          </div>
+        </div>
+
+        <div style="font-size: 13px; font-weight: 700; color: #fff; margin: 16px 0 10px 0;">Глубокие операции оптимизации и очистки:</div>
+        <div class="flyout-grid">
+          <button class="btn btn-secondary" onclick="deepCleanAction('terminate_processes')"><img src="/icons/bolt.png" style="width: 14px; height: 14px;"> Завершить фоновые процессы</button>
+          <button class="btn btn-secondary" onclick="deepCleanAction('clean_ram')"><img src="/icons/ram.png" style="width: 14px; height: 14px;"> Сбросить наборы памяти ОЗУ</button>
+          <button class="btn btn-secondary" onclick="deepCleanAction('clean_junk')"><img src="/icons/trash.png" style="width: 14px; height: 14px;"> Очистить мусорные директории</button>
+          <button class="btn btn-secondary" onclick="deepCleanAction('clean_registry')"><img src="/icons/broom.png" style="width: 14px; height: 14px;"> Очистить мусор реестра</button>
+          <button class="btn btn-secondary" onclick="deepCleanAction('clean_winsxs')"><img src="/icons/download.png" style="width: 14px; height: 14px;"> Очистить хранилище WinSxS</button>
+          <button class="btn btn-secondary" onclick="deepCleanAction('clean_driverstore')"><img src="/icons/gpu.png" style="width: 14px; height: 14px;"> Очистить DriverStore</button>
+        </div>
+      </section>
+
+      <!-- TAB 10: ТОЧКИ ВОССТАНОВЛЕНИЯ -->
+      <section id="tab-10" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/restore_checkpoint.png"></div>
+          <div class="content-header-text">
+            <h1>Резервное копирование и безопасность</h1>
+            <p>Создание системных точек восстановления Windows и экспорт профилей .wcs</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Точка восстановления системы Windows</div>
+          <div class="card-desc">Создает официальную аппаратную точку восстановления через системный WinAPI SRSetRestorePointW перед применением настроек.</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <input type="text" id="restorePointDesc" class="input-box" style="max-width: 380px;" value="WCS Optimization Restore Point">
+            <button class="btn btn-primary" onclick="createRestorePoint()"><img src="/icons/shield.png" style="width: 14px; height: 14px;"> Создать точку восстановления</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Импорт и Экспорт профилей (.wcs)</div>
+          <div class="card-desc">Сохраняйте ваши настройки оптимизации в файл профиля для мгновенного переноса на любой турнирный или домашний ПК.</div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary" onclick="exportProfile()"><img src="/icons/copy.png" style="width: 14px;"> Экспортировать профиль</button>
+            <button class="btn btn-secondary" onclick="importProfile()"><img src="/icons/refresh.png" style="width: 14px;"> Импортировать профиль</button>
+          </div>
+        </div>
+
+        <div class="card" style="border-color: rgba(239, 68, 68, 0.3);">
+          <div class="card-title" style="color: #f87171;">Сброс к заводским настройкам Microsoft</div>
+          <div class="card-desc">Возвращает все измененные ключи реестра, настройки планировщика, сетевого стека и таймера к стандартным значениям Windows.</div>
+          <button class="btn btn-secondary" style="border-color: rgba(239, 68, 68, 0.4); color: #f87171;" onclick="revertToDefaults()">Вернуть все параметры по умолчанию</button>
+        </div>
+      </section>
+
+      <!-- TAB 11: НАСТРОЙКИ -->
+      <section id="tab-11" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/setting_tray.png"></div>
+          <div class="content-header-text">
+            <h1>Настройки программы</h1>
+            <p>Управление поведением в трее, темами оформления и режимом Game Boost</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Поведение приложения</div>
+          <div class="card-desc">Конфигурация работы WCS в фоновом режиме и интеграция с системным треем Windows.</div>
+          
+          <div class="tweak-list" style="margin-top: 14px;">
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/setting_tray.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Держать в трее при закрытии окна</span>
+                  <span class="tweak-details">При нажатии на крестик окно сворачивается в системный трей, сохраняя работу фоновых служб и оптимизаций.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="setting-runInBackground" onchange="updateAppSetting('runInBackground', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/setting_minimize.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Запускать свернутым в трей</span>
+                  <span class="tweak-details">Запуск программы без отображения основного окна прямо в системный трей.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="setting-startMinimizedToTray" onchange="updateAppSetting('startMinimizedToTray', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="tweak-row">
+              <div class="tweak-info">
+                <div class="tweak-icon-badge"><img src="/icons/startup_rocket.png"></div>
+                <div class="tweak-text">
+                  <span class="tweak-name">Автозапуск вместе с Windows</span>
+                  <span class="tweak-details">Автоматически запускать программу при входе в систему для поддержания оптимизаций и фонового буста.</span>
+                </div>
+              </div>
+              <div class="tweak-controls">
+                <label class="switch">
+                  <input type="checkbox" id="setting-autostartWithWindows" onchange="updateAppSetting('autostartWithWindows', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Game Boost Link Card -->
+        <div class="card" style="margin-top: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div class="tweak-icon-badge" style="width: 42px; height: 42px; background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25);"><img src="/icons/gamepad.png" style="width: 22px; height: 22px;"></div>
+              <div>
+                <div class="card-title" style="margin: 0 0 4px 0;">Игровой режим и авто-буст (Dynamic Boost)</div>
+                <div class="card-desc">Каталог игр с постерами, автопоиск установленных игр и параметры оптимизации процессов вынесены в отдельную вкладку.</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="switchTab(2)" style="border-color: rgba(0, 210, 255, 0.35); color: #00d2ff;">
+              Перейти в Игровой режим →
+            </button>
+          </div>
+        </div>
+
+        <!-- Theme Accent Selector (Task 4.2) -->
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-title">Цветовой акцент интерфейса</div>
+          <div class="card-desc">Выберите неоновый стиль и цветовую схему для всех элементов управления, индикаторов и графики.</div>
+          
+          <div class="theme-palette-grid">
+            <div id="swatch-cyan" class="theme-swatch active" onclick="setThemeAccent('cyan')">
+              <span class="theme-dot" style="background-color: #00d2ff; color: #00d2ff;"></span>
+              <span>Cyan</span>
+            </div>
+            <div id="swatch-emerald" class="theme-swatch" onclick="setThemeAccent('emerald')">
+              <span class="theme-dot" style="background-color: #34d399; color: #34d399;"></span>
+              <span>Emerald</span>
+            </div>
+            <div id="swatch-crimson" class="theme-swatch" onclick="setThemeAccent('crimson')">
+              <span class="theme-dot" style="background-color: #fb7185; color: #fb7185;"></span>
+              <span>Crimson</span>
+            </div>
+            <div id="swatch-violet" class="theme-swatch" onclick="setThemeAccent('violet')">
+              <span class="theme-dot" style="background-color: #c084fc; color: #c084fc;"></span>
+              <span>Violet</span>
+            </div>
+            <div id="swatch-amber" class="theme-swatch" onclick="setThemeAccent('amber')">
+              <span class="theme-dot" style="background-color: #fbbf24; color: #fbbf24;"></span>
+              <span>Amber</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2D Background Landscape Themes & Art -->
+        <div class="card theme-picker-card" style="margin-top: 16px;">
+          <div class="card-title">
+            <img src="/icons/sliders.png" style="width:20px;height:20px;">
+            <span>2D Темы оформления и художественный фон</span>
+          </div>
+          <div class="card-desc">Выберите векторную 2D иллюстрацию для заднего фона приложения. Высокий контраст интерфейса и нулевая нагрузка на видеокарту.</div>
+
+          <div class="theme-picker-grid" id="themePickerGrid">
+            <!-- Theme 1: Fuji Japanese -->
+            <div id="theme-card-fuji" class="theme-card active" onclick="selectThemeBg('fuji')">
+              <div class="theme-preview-box prev-fuji"></div>
+              <div class="theme-card-info">
+                <span class="theme-name">Япония: Фудзи</span>
+                <span class="theme-tag tag-jp">Япония</span>
+              </div>
+              <div class="theme-desc">Силуэт горы Фудзияма, алое солнце, ворота Тории и лепестки сакуры.</div>
+            </div>
+
+            <!-- Theme 2: Mountain Ridge -->
+            <div id="theme-card-mountains" class="theme-card" onclick="selectThemeBg('mountains')">
+              <div class="theme-preview-box prev-mountains"></div>
+              <div class="theme-card-info">
+                <span class="theme-name">Горный хребет</span>
+                <span class="theme-tag tag-mtn">Горы 2D</span>
+              </div>
+              <div class="theme-desc">Многослойные сумеречные альпийские пики, хвойный лес и полумесяц.</div>
+            </div>
+
+            <!-- Theme 3: Cyber Horizon -->
+            <div id="theme-card-cyber" class="theme-card" onclick="selectThemeBg('cyber')">
+              <div class="theme-preview-box prev-cyber"></div>
+              <div class="theme-card-info">
+                <span class="theme-name">Кибер Горизонт</span>
+                <span class="theme-tag tag-cyber">Неон</span>
+              </div>
+              <div class="theme-desc">Ретро-синтвейв сетка, неоновый город и киберспортивное солнце.</div>
+            </div>
+
+            <!-- Theme 4: Deep Cosmos -->
+            <div id="theme-card-cosmos" class="theme-card" onclick="selectThemeBg('cosmos')">
+              <div class="theme-preview-box prev-cosmos"></div>
+              <div class="theme-card-info">
+                <span class="theme-name">Глубокий космос</span>
+                <span class="theme-tag tag-space">Космос</span>
+              </div>
+              <div class="theme-desc">Орбитальные кольца планет, созвездия и туманность низких задержек.</div>
+            </div>
+
+            <!-- Theme 5: Obsidian Minimal -->
+            <div id="theme-card-obsidian" class="theme-card" onclick="selectThemeBg('obsidian')">
+              <div class="theme-preview-box prev-obsidian"></div>
+              <div class="theme-card-info">
+                <span class="theme-name">Обсидиан WCS</span>
+                <span class="theme-tag tag-default">Дефолт</span>
+              </div>
+              <div class="theme-desc">Чистый строгий киберспортивный микро-паттерн с фоновым свечением.</div>
+            </div>
+          </div>
+
+          <!-- Background Opacity & Glassmorphism Controls -->
+          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <div style="font-size: 12.5px; font-weight: 600; color: #fff;">Прозрачность 2D фона</div>
+              <div style="font-size: 11px; color: var(--text-dim);">Насыщенность векторного пейзажа сквозь матовое стекло интерфейса</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button id="btn-op-25" class="theme-opacity-btn" onclick="setThemeBgOpacity(0.25)">Мягкий (25%)</button>
+              <button id="btn-op-45" class="theme-opacity-btn active" onclick="setThemeBgOpacity(0.45)">Баланс (45%)</button>
+              <button id="btn-op-65" class="theme-opacity-btn" onclick="setThemeBgOpacity(0.65)">Насыщенный (65%)</button>
+              <button id="btn-op-85" class="theme-opacity-btn" onclick="setThemeBgOpacity(0.85)">Кино (85%)</button>
+            </div>
+          </div>
+
+          <!-- Live Background Animations & Speed Controls -->
+          <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-size: 12.5px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px;">
+                <span>Живые анимации заднего фона</span>
+                <span class="badge" style="background: rgba(0, 210, 255, 0.15); color: var(--accent-primary); border: 1px solid rgba(0, 210, 255, 0.3); font-size: 9px; padding: 1px 6px;">GPU 60+ FPS</span>
+              </div>
+              <div style="font-size: 11px; color: var(--text-dim);">Падающие лепестки сакуры, северное сияние, метеоры и синтвейв-горизонт</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="display: flex; gap: 6px;">
+                <button id="btn-anim-slow" class="theme-opacity-btn" onclick="setThemeAnimSpeed(0.6)" title="Медленные плавные анимации">0.6x</button>
+                <button id="btn-anim-norm" class="theme-opacity-btn active" onclick="setThemeAnimSpeed(1.0)" title="Стандартная скорость">1.0x</button>
+                <button id="btn-anim-fast" class="theme-opacity-btn" onclick="setThemeAnimSpeed(1.4)" title="Динамичные быстрые анимации">1.4x</button>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingThemeAnimToggle" onchange="toggleThemeAnimation(this.checked)" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Glassmorphism Blur Depth Control -->
+          <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <div style="font-size: 12.5px; font-weight: 600; color: #fff;">Глубина матового стекла (Glass Blur)</div>
+              <div style="font-size: 11px; color: var(--text-dim);">Степень оптического размытия карточек и панелей в стиле macOS / Fluent Mica</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button id="btn-blur-12" class="theme-opacity-btn" onclick="setGlassBlur(12)">Легкое (12px)</button>
+              <button id="btn-blur-20" class="theme-opacity-btn active" onclick="setGlassBlur(20)">Акрил (20px)</button>
+              <button id="btn-blur-30" class="theme-opacity-btn" onclick="setGlassBlur(30)">Глубокое (30px)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profiles & Backups (Task 4.1) -->
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-title">Профили и резервные копии настроек</div>
+          <div class="card-desc">Сохраните текущую конфигурацию твиков и параметров в файл или восстановите сохраненный профиль.</div>
+          
+          <div style="display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;">
+            <button class="btn btn-secondary" onclick="exportProfile()">
+              <img src="/icons/download.png" style="width: 14px; height: 14px;"> Экспорт профиля (.wcspreset)
+            </button>
+            <button class="btn btn-secondary" onclick="triggerImportProfile()">
+              <img src="/icons/upload.png" style="width: 14px; height: 14px;"> Импорт профиля (.wcspreset)
+            </button>
+            <input type="file" id="profileFileInput" accept=".wcspreset,.json" style="display: none;" onchange="handleProfileFile(event)">
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 12: ЦЕНТР ОБНОВЛЕНИЙ -->
+      <section id="tab-12" class="tab-pane">
+        <div class="content-header">
+          <div class="content-header-icon"><img src="/icons/zap.png"></div>
+          <div class="content-header-text">
+            <h1>Центр обновлений WCS</h1>
+            <p>Официальные киберспортивные релизы и прямая загрузка обновлений с GitHub</p>
+          </div>
+        </div>
+
+        <!-- Hero Update Status Card -->
+        <div class="card update-hero-card">
+          <div class="update-hero-top">
+            <div class="update-hero-info">
+              <div class="update-hero-title-row">
+                <span class="update-hero-icon-wrap"><img src="/icons/zap.png" class="update-hero-big-icon" alt="Zap"></span>
+                <div>
+                  <h2 class="update-hero-heading" id="tabUpdateHeading">Проверка релизов...</h2>
+                  <div class="update-hero-subheading" id="tabUpdateSubheading">Подключение к официальному репозиторию GitHub Releases...</div>
+                </div>
+              </div>
+
+              <div class="update-version-badges">
+                <div class="version-chip current">
+                  <span class="version-chip-label">Текущая версия</span>
+                  <span class="version-chip-val" id="tabUpdateCurrentVer">v3.5</span>
+                </div>
+                <span class="version-chip-arrow">→</span>
+                <div class="version-chip latest" id="tabUpdateLatestChip">
+                  <span class="version-chip-label">Актуальная на GitHub</span>
+                  <span class="version-chip-val" id="tabUpdateLatestVer">v3.5</span>
+                </div>
+                <div id="tabUpdateStatusPill" class="status-pill cyan" style="margin-left: 8px;">
+                  <span id="tabUpdateStatusPillText">Проверка...</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="update-hero-actions">
+              <button id="tabBtnDownload" class="btn btn-primary btn-glow" onclick="downloadUpdate()" style="display: none;">
+                <img src="/icons/download.png" style="width: 15px; height: 15px; margin-right: 6px;"> Скачать с GitHub (.exe)
+              </button>
+              <button id="tabBtnReleasePage" class="btn btn-secondary btn-github" onclick="openReleasePage()"><img src="/icons/github.png" class="btn-icon"> <span>Страница на GitHub</span></button>
+              <button id="tabBtnCheckNow" class="btn btn-secondary" onclick="manualCheckUpdates()">
+                <img src="/icons/search.png" style="width: 14px; height: 14px; margin-right: 6px;"> Проверить сейчас
+              </button>
+            </div>
+          </div>
+
+          <div class="update-hero-footer">
+            <span id="tabLastCheckTimeLabel" class="update-time-text">Последняя проверка: только что</span>
+            <span class="update-secure-badge"><img src="/icons/shield.png" style="width: 12px; height: 12px; margin-right: 5px; vertical-align: middle;">Безопасный источник: GitHub Releases (Direct HTTPS / TLS 1.3)</span>
+          </div>
+        </div>
+
+        <!-- Release Notes & Changelog Card -->
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-title">
+            <img src="/icons/sliders.png" style="width: 16px; height: 16px;">
+            <span>Описание и список изменений релиза</span>
+          </div>
+          <div class="card-desc">Подробный чейнджлог нововведений, оптимизаций задержек и правок стабильности.</div>
+
+          <div id="tabUpdateChangelogBox" class="update-tab-changelog">
+            Загрузка описания изменений...
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Bottom App Footer -->
+  <footer class="app-footer">
+    <div class="footer-status">
+      <div class="pulsing-dot"></div>
+      <span>Все изменения 100% безопасны и обратимы в один клик</span>
+    </div>
+    <div class="footer-actions">
+      <button class="btn btn-secondary" onclick="revertToDefaults()"><img src="/icons/refresh.png" style="width: 14px;"> Заводские настройки</button>
+      <button class="btn btn-primary" onclick="applyAllTweaks()"><img src="/icons/bolt.png" style="width: 14px; height: 14px; margin-right: 6px; vertical-align: middle;">Применить параметры</button>
+    </div>
+  </footer>
+
+  <!-- Modal: About WCS -->
+  <div id="aboutModal" class="modal-overlay">
+    <div class="modal-card">
+      <img src="/branding/wcs_logo_transparent.png" alt="WCS Logo" class="modal-logo" id="aboutModalLogo">
+      <div class="modal-title">WINDOWS CONFIG STUDIO (WCS)</div>
+      <div class="modal-subtitle" id="aboutAppVersion">Версия 3.5 • Нативная архитектура C++20 / WebView2</div>
+
+      <!-- Карточка конфигурации ПК -->
+      <div class="pc-specs-card">
+        <div class="pc-specs-card-header">
+          <span class="pc-specs-card-title">Конфигурация вашего ПК:</span>
+        </div>
+        <div class="pc-specs-list">
+          <div class="pc-spec-item">
+            <span class="pc-spec-label">Процессор:</span>
+            <span class="pc-spec-value" id="aboutCpu">Определение...</span>
+          </div>
+          <div class="pc-spec-item">
+            <span class="pc-spec-label">Видеокарта:</span>
+            <span class="pc-spec-value" id="aboutGpu">Определение...</span>
+          </div>
+          <div class="pc-spec-item">
+            <span class="pc-spec-label">Оперативная память:</span>
+            <span class="pc-spec-value" id="aboutRam">Определение...</span>
+          </div>
+          <div class="pc-spec-item">
+            <span class="pc-spec-label">Операционная система:</span>
+            <span class="pc-spec-value" id="aboutOs">Определение...</span>
+          </div>
+          <div class="pc-spec-item">
+            <span class="pc-spec-label">План питания:</span>
+            <span class="pc-spec-value" id="aboutPower">Определение...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Блок античит-безопасности -->
+      <div class="anticheat-shield-block">
+        <div class="anticheat-shield-header">
+          <img src="/icons/shield.png" alt="Anti-Cheat Shield" class="anticheat-shield-icon">
+          <span class="anticheat-shield-title">100% Античит-безопасность (Anti-Cheat Safe)</span>
+        </div>
+        <div class="anticheat-shield-desc">
+          Программа не внедряется в память процессов и не содержит инжектов. Все изменения применяются исключительно через нативные системные вызовы Win32 API и параметры реестра Windows (100% Safe: Riot Vanguard, Easy Anti-Cheat, BattlEye, VAC, FACEIT AC).
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%;" onclick="closeAboutModal()">Понятно</button>
+    </div>
+  </div>
+
+  <!-- Modal: Preset Diff Inspector (Task 2.2 & 4) -->
+  <div id="presetDiffModal" class="modal-overlay">
+    <div class="modal-card diff-modal-card">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="/icons/sliders.png" style="width: 22px; height: 22px;">
+          <div class="modal-title" style="margin: 0; text-align: left; font-size: 15px;">
+            Инспектор пресета: <span id="diffPresetName" style="color: var(--accent-primary);">...</span>
+          </div>
+        </div>
+        <span id="diffPresetBadge" class="preset-badge badge-blue">MAX FPS</span>
+      </div>
+      <div id="diffPresetDesc" class="modal-subtitle" style="text-align: left; margin-bottom: 10px; font-size: 11.5px; line-height: 1.45;">
+        Ниже приведен подробный список параметров, которые будут изменены в системе:
+      </div>
+      <div id="diffCountSummary" style="font-size: 11px; font-weight: 600; color: var(--text-dim); margin-bottom: 10px; padding: 6px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between;">
+        <span id="diffCountText">Параметров к изменению: 0</span>
+      </div>
+
+      <!-- Scrollable diff container -->
+      <div id="presetDiffContainer" class="diff-container">
+        <!-- Diff rows injected dynamically -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+        <button class="btn btn-secondary" onclick="closePresetDiffModal()">Отмена</button>
+        <button id="btnConfirmApplyPreset" class="btn btn-primary" onclick="confirmApplyPreset()"><img src="/icons/bolt.png" style="width: 14px; height: 14px; margin-right: 6px; vertical-align: middle;">Применить изменения</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: In-App Update Available -->
+  <div id="updateModal" class="modal-overlay" onclick="if(event.target===this)closeUpdateModal()">
+    <div class="modal-card update-modal-card">
+      <div class="update-modal-header">
+        <div class="update-badge-pill">
+          <span class="update-badge-spark"><img src="/icons/bolt.png" style="width: 11px; height: 11px;"></span>
+          <span>НОВЫЙ РЕЛИЗ</span>
+        </div>
+        <button class="modal-close-icon" onclick="closeUpdateModal()" aria-label="Закрыть" title="Закрыть">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="update-modal-hero">
+        <img src="/icons/game_boost_rocket.png" class="update-hero-icon" alt="Rocket">
+        <div>
+          <div class="modal-title" style="text-align: left; margin: 0 0 4px 0;">Доступно обновление WCS</div>
+          <div class="update-version-row">
+            <span class="version-tag current">Текущая: <b id="updateCurrentVerText">v3.5</b></span>
+            <span class="version-arrow">→</span>
+            <span class="version-tag new">Новая: <b id="updateNewVerText" class="accent-text">v3.5</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="update-source-info">
+        <span class="update-source-label">Источник:</span>
+        <span id="updateSourceText" class="update-source-val">https://github.com/ext3ndedsoft/wcs_release</span>
+        <span id="updateDateText" class="update-date-val"></span>
+      </div>
+
+      <!-- Changelog container -->
+      <div class="update-changelog-box">
+        <div class="update-changelog-title">Что нового в этой версии:</div>
+        <div id="updateModalChangelog" class="update-changelog-content">
+          Загрузка описания релиза...
+        </div>
+      </div>
+
+      <div class="update-modal-footer">
+        <button class="btn btn-secondary" onclick="switchTab(11); closeUpdateModal();">
+          <img src="/icons/zap.png" style="width: 14px; height: 14px; margin-right: 6px;"> Центр обновлений
+        </button>
+        <button id="btnOpenReleasePage" class="btn btn-secondary btn-github" onclick="openReleasePage()"><img src="/icons/github.png" class="btn-icon"> <span>Страница на GitHub</span></button>
+        <button id="btnDownloadUpdate" class="btn btn-primary btn-glow" onclick="downloadUpdate()">
+          <img src="/icons/download.png" style="width: 14px; height: 14px; margin-right: 6px;"> Скачать на GitHub
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: System Action Confirmation Dialog -->
+  <div id="confirmModal" class="modal-overlay" onclick="if(event.target===this)cancelConfirmModal()">
+    <div class="modal-card confirm-modal-card">
+      <button class="modal-close-icon confirm-modal-close" onclick="cancelConfirmModal()" aria-label="Закрыть" title="Закрыть">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div class="confirm-modal-badge badge-danger" id="confirmModalBadge">
+        <img src="/icons/trash.png" alt="Confirm" id="confirmModalIcon">
+      </div>
+
+      <div class="modal-title" id="confirmModalTitle">Удаление из автозагрузки</div>
+      
+      <div class="confirm-modal-message" id="confirmModalMessage">
+        Вы действительно хотите удалить эту запись из автозагрузки Windows?
+      </div>
+      
+      <div class="confirm-modal-details" id="confirmModalDetails" style="display: none;"></div>
+
+      <div class="confirm-modal-subtext" id="confirmModalSubtext">
+        Приложение больше не будет запускаться автоматически при старте системы.
+      </div>
+
+      <div class="confirm-modal-actions">
+        <button id="btnConfirmCancel" class="btn btn-secondary" onclick="cancelConfirmModal()">Отмена</button>
+        <button id="btnConfirmOk" class="btn btn-danger" onclick="acceptConfirmModal()">
+          <img src="/icons/trash.png" id="btnConfirmOkIcon" class="btn-icon-confirm" alt="">
+          <span id="btnConfirmOkText">Удалить</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Luxury Tooltip for Services -->
+  <div id="serviceTooltip" class="service-tooltip" style="display: none;"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/web/js/app.js"></script>
+</body>
+</html>

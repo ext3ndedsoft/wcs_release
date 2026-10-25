@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Cleaner — WCS</title>
+  <link rel="icon" type="image/png" href="/branding/wcs_logo_transparent.png">
+  <link rel="shortcut icon" href="/branding/app_icon.ico">
+  <link rel="stylesheet" href="/web/css/style.css">
+  <link rel="stylesheet" href="/web/css/themes.css">
+  <style>
+    /* ==========================================================================
+       Windows Config Studio — Memory Cleaner Compact Window Design System
+       Inherits 100% design-code, typography, glassmorphism, and color matrix
+       ========================================================================== */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden !important;
+      background: #080a10;
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI Variable Display", "Segoe UI", Inter, Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: relative;
+      animation: memWindowEntrance 0.32s var(--ease-apple) forwards;
+    }
+
+    @keyframes memWindowEntrance {
+      0% {
+        opacity: 0;
+        transform: scale(0.985) translateY(4px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* Ambient Background Layer */
+    .theme-bg-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.38;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Mini App Header */
+    .mini-app-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 38px;
+      padding: 0 4px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .mini-brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .mini-brand-logo {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px var(--accent-glow));
+    }
+
+    .mini-brand-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mini-brand-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: #fff;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    .mini-brand-title span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mini-brand-subtitle {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+      line-height: 1.15;
+    }
+
+    .header-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(14, 20, 32, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-full);
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #cbd5e1;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green-glow);
+      flex-shrink: 0;
+    }
+
+    .status-dot.pulse {
+      animation: pulse-dot 1.5s infinite ease-in-out;
+    }
+
+    /* Subtabs Segmented Bar */
+    .mem-subtabs-bar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 4px;
+      background: rgba(10, 14, 24, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-card);
+      padding: 3px;
+      border-radius: var(--radius-md);
+      margin-bottom: 10px !important;
+      height: 34px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .mem-subtab-btn {
+      flex: 1;
+      height: 26px;
+      border-radius: 7px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-dim);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s var(--ease-apple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .mem-subtab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .mem-subtab-btn:active {
+      transform: scale(0.97);
+    }
+
+    .mem-subtab-btn.active {
+      background: var(--accent-gradient);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 2px 10px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .mem-subtab-icon {
+      width: 13px;
+      height: 13px;
+      object-fit: contain;
+      vertical-align: middle;
+      opacity: 0.95;
+    }
+
+    /* Content Area & Tabs */
+    .mem-tab-content {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-height: 0;
+      overflow-y: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      animation: memTabEntrance 0.24s var(--ease-apple) forwards;
+    }
+
+    @keyframes memTabEntrance {
+      0% { opacity: 0; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Glass Containers */
+    .card.mem-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 10px 14px;
+      margin-bottom: 0;
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      position: relative;
+      transition: border-color var(--transition);
+    }
+
+    .card.mem-card:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .card-title-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .status-dot-emerald {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green-glow);
+      flex-shrink: 0;
+    }
+
+    .card-section-title {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .card-val-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-stat-text {
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 11.5px;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .badge-load {
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      color: var(--accent-primary);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1.5px 7px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.2px;
+    }
+
+    /* Segmented Progress Bar */
+    .segmented-bar {
+      height: 16px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      display: flex;
+      margin: 7px 0 6px 0;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .segmented-bar::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      pointer-events: none;
+    }
+
+    .segment-used {
+      background: var(--accent-gradient);
+      height: 100%;
+      will-change: width;
+      transition: width 0.35s var(--ease-apple);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .segment-standby {
+      background: linear-gradient(90deg, #8b5cf6, #c084fc);
+      height: 100%;
+      will-change: width;
+      transition: width 0.35s var(--ease-apple);
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.45);
+    }
+
+    /* 3-Segment Legend */
+    .legend-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+
+    .legend-item {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .legend-item b {
+      color: #fff;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .leg-accent { color: var(--accent-primary); }
+    .leg-purple { color: #c084fc; }
+    .leg-green  { color: #34d399; }
+
+    .card-inner-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.06);
+      margin: 7px 0;
+    }
+
+    /* Pagefile Row */
+    .pagefile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10.5px;
+      color: var(--text-dim);
+      line-height: 1.2;
+    }
+
+    .pagefile-val {
+      font-weight: 600;
+      color: #a78bfa;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .pagefile-track {
+      height: 4px;
+      margin: 4px 0 0 0;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    .pagefile-fill {
+      background: linear-gradient(90deg, #8b5cf6, #c084fc);
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.35s ease;
+    }
+
+    /* 4 Stat Tiles Grid (2x2) */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .stat-tile {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 7px 11px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.22s var(--ease-apple);
+    }
+
+    .stat-tile:hover {
+      border-color: var(--border-hover);
+      background: rgba(18, 25, 40, 0.65);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 12px var(--accent-dim);
+    }
+
+    .stat-label {
+      font-size: 9.5px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .stat-val {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 2px;
+      letter-spacing: 0.2px;
+      line-height: 1.2;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .dot-blue   { color: #60a5fa; }
+    .dot-accent { color: var(--accent-primary); }
+    .dot-green  { color: #34d399; }
+    .dot-purple { color: #c084fc; }
+
+    .text-slate  { color: #cbd5e1; }
+    .text-accent { color: var(--accent-primary); }
+    .text-green  { color: #34d399; }
+    .text-purple { color: #c084fc; }
+
+    /* Action Buttons */
+    .action-buttons-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .action-buttons-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .btn-icon {
+      width: 13px;
+      height: 13px;
+      object-fit: contain;
+      vertical-align: middle;
+      opacity: 0.95;
+    }
+
+    .mem-btn-action {
+      height: 31px !important;
+      font-size: 11.5px !important;
+      font-weight: 600 !important;
+      padding: 0 10px !important;
+      border-radius: var(--radius-md) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.1px;
+    }
+
+    .mem-btn-hero {
+      height: 36px !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      border-radius: var(--radius-md) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Status & Optimization Result Card */
+    .card.status-card {
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .status-card-top {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .status-card-title {
+      font-weight: 600;
+      color: #e2e8f0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-chip {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 2.5px 8px;
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    .status-chip .chip-val {
+      font-weight: 700;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .chip-amber .chip-val { color: #fbbf24; }
+    .chip-accent .chip-val { color: var(--accent-primary); }
+
+    /* Auto-Clean Card (Bottom) */
+    .card.autoclean-card {
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 10.5px;
+    }
+
+    .autoclean-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .autoclean-title {
+      color: #e2e8f0;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mini-icon {
+      width: 12px;
+      height: 12px;
+      object-fit: contain;
+      opacity: 0.85;
+    }
+
+    .autoclean-pill {
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      color: var(--accent-primary);
+      font-size: 9.5px;
+      padding: 1.5px 7px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+    }
+
+    .autoclean-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 10px;
+    }
+
+    .countdown-val {
+      color: #fff;
+      font-weight: 700;
+      font-feature-settings: "tnum" 1;
+    }
+
+    /* Tab 1: Configurator */
+    #memTab1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+      min-height: 0;
+      gap: 8px;
+    }
+
+    .mem-config-card {
+      padding: 10px 14px !important;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2px 0;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .slider-row .switch {
+      transform: scale(0.82);
+      transform-origin: right center;
+    }
+
+    .mem-range {
+      width: 100%;
+      accent-color: var(--accent-primary);
+      margin: 4px 0 6px 0;
+      height: 4px;
+      cursor: pointer;
+    }
+
+    .preset-pills-row {
+      display: flex;
+      gap: 5px;
+      margin: 3px 0 6px 0;
+    }
+
+    .preset-pill {
+      flex: 1;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      color: var(--text-dim);
+      font-size: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.2s var(--ease-apple);
+      font-feature-settings: "tnum" 1;
+    }
+
+    .preset-pill:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .preset-pill:active {
+      transform: scale(0.96);
+    }
+
+    .preset-pill.active {
+      background: var(--accent-dim);
+      border-color: var(--accent-border);
+      color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
+      font-weight: 700;
+    }
+
+    .mem-btn-save {
+      width: 100%;
+      height: 38px !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      border-radius: var(--radius-md) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      letter-spacing: 0.2px;
+    }
+
+    /* Cross-fade animations */
+    .mem-tab-content.tab-leaving {
+      animation: memTabFadeOut 0.1s var(--ease-apple) forwards !important;
+    }
+    .mem-tab-content.tab-entering {
+      animation: memTabFadeIn 0.2s var(--ease-apple) forwards !important;
+    }
+
+    @keyframes memTabFadeOut {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-4px); }
+    }
+
+    @keyframes memTabFadeIn {
+      0% { opacity: 0; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Theme Background Layer -->
+  <div id="themeBackgroundLayer" class="theme-bg-layer theme-bg-obsidian" aria-hidden="true"></div>
+
+  <!-- Mini Header -->
+  <div class="mini-app-header">
+    <div class="mini-brand">
+      <img src="/branding/wcs_logo_transparent.png" class="mini-brand-logo" id="headerLogo" alt="WCS">
+      <div class="mini-brand-titles">
+        <div class="mini-brand-title">WINDOWS <span>CONFIG STUDIO</span></div>
+        <div class="mini-brand-subtitle">Memory Cleaner Pro</div>
+      </div>
+    </div>
+    <div class="header-status-pill">
+      <span class="status-dot pulse"></span>
+      <span id="headerRamPill">ОЗУ: 16 ГБ</span>
+    </div>
+  </div>
+
+  <!-- Subtabs Segmented Bar -->
+  <div class="mem-subtabs-bar">
+    <button id="tabBtn0" class="mem-subtab-btn active" onclick="switchMemTab(0)">
+      <img src="/icons/gauge.png" class="mem-subtab-icon" alt="">
+      <span>Мониторинг</span>
+    </button>
+    <button id="tabBtn1" class="mem-subtab-btn" onclick="switchMemTab(1)">
+      <img src="/icons/settings.png" class="mem-subtab-icon" alt="">
+      <span>Конфигуратор</span>
+    </button>
+  </div>
+
+  <!-- TAB 0: Мониторинг -->
+  <div id="memTab0" class="mem-tab-content">
+
+    <!-- Card 1: RAM Usage Gauge Card -->
+    <div class="card mem-card">
+      <div class="card-title-row">
+        <div class="card-title-left">
+          <span class="status-dot-emerald"></span>
+          <span class="card-section-title">Физическая память (RAM)</span>
+        </div>
+        <div class="card-val-row">
+          <span id="ramTitleVal" class="card-stat-text">0.0 ГБ / 0.0 ГБ</span>
+          <span id="ramPercentBadge" class="badge-load">0%</span>
+        </div>
+      </div>
+      
+      <!-- Segmented Bar -->
+      <div class="segmented-bar">
+        <div id="barUsed" class="segment-used" style="width: 30%;"></div>
+        <div id="barStandby" class="segment-standby" style="width: 10%;"></div>
+      </div>
+      
+      <!-- 3-Segment Legend -->
+      <div class="legend-row">
+        <span class="legend-item leg-accent"><span class="legend-dot">●</span> В работе: <b id="legUsed">0%</b></span>
+        <span class="legend-item leg-purple"><span class="legend-dot">●</span> Standby кэш: <b id="legStandby">0%</b></span>
+        <span class="legend-item leg-green"><span class="legend-dot">●</span> Свободно: <b id="legFree">0%</b></span>
+      </div>
+
+      <!-- Divider -->
+      <div class="card-inner-divider"></div>
+
+      <!-- Pagefile Info -->
+      <div class="pagefile-header">
+        <span>Файл подкачки (Pagefile):</span>
+        <span id="pagefileVal" class="pagefile-val">0.0 ГБ / 0.0 ГБ (0%)</span>
+      </div>
+      <div class="pagefile-track">
+        <div id="barPagefile" class="pagefile-fill" style="width: 40%;"></div>
+      </div>
+    </div>
+
+    <!-- 4 Stat Tiles Grid -->
+    <div class="stat-grid">
+      <div class="stat-tile">
+        <div class="stat-label"><span class="dot-blue">●</span> ВСЕГО ПАМЯТИ</div>
+        <div id="statTotalRam" class="stat-val text-slate">0.0 ГБ</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label"><span class="dot-accent">●</span> В РАБОТЕ</div>
+        <div id="statInUseRam" class="stat-val text-accent">0.00 ГБ</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label"><span class="dot-green">●</span> ДОСТУПНО</div>
+        <div id="statFreeRam" class="stat-val text-green">0.00 ГБ</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label"><span class="dot-purple">●</span> КЭШ STANDBY</div>
+        <div id="statStandbyRam" class="stat-val text-purple">0.00 ГБ</div>
+      </div>
+    </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="action-buttons-group">
+      <div class="action-buttons-row">
+        <button class="btn btn-secondary mem-btn-action" onclick="trimWorkingSet()">
+          <img src="/icons/copy.png" class="btn-icon" alt=""> Сбросить наборы
+        </button>
+        <button class="btn btn-secondary mem-btn-action" onclick="clearStandbyCache()">
+          <img src="/icons/refresh.png" class="btn-icon" alt=""> Очистить кэш
+        </button>
+      </div>
+
+      <button class="btn btn-primary mem-btn-hero" onclick="cleanAllMemory()">
+        <img src="/icons/broom.png" class="btn-icon" alt=""> Полная оптимизация памяти
+      </button>
+    </div>
+
+    <!-- Optimization Status Card -->
+    <div class="card status-card">
+      <div class="status-card-top">
+        <span class="status-dot green active"></span>
+        <span id="memStatusText" class="status-card-title">Память в оптимальном состоянии</span>
+      </div>
+      <div class="status-chips-row">
+        <div class="status-chip chip-amber">
+          <span>Пиковая нагрузка:</span>
+          <span id="statPeak" class="chip-val">0%</span>
+        </div>
+        <div class="status-chip chip-accent">
+          <span>Освобождено:</span>
+          <span id="statFreed" class="chip-val">0 Б</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auto-Clean Summary Card -->
+    <div class="card autoclean-card">
+      <div class="autoclean-header">
+        <div class="autoclean-title">
+          <img src="/icons/clock.png" class="mini-icon" alt="">
+          <span>Авто-очистка:</span>
+        </div>
+        <span id="autoCleanDesc" class="autoclean-pill">Порог > 80% • Каждые 15 мин</span>
+      </div>
+      <div class="autoclean-footer">
+        <span>Следующая очистка:</span>
+        <span id="timerCountdown" class="countdown-val">через 15:00</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB 1: Конфигуратор -->
+  <div id="memTab1" class="mem-tab-content" style="display: none;">
+
+    <!-- Card 1: Авто-очистка по порогу памяти -->
+    <div class="card mem-card mem-config-card">
+      <div class="slider-row">
+        <span style="font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 7px; color: #fff;">
+          <img src="/icons/gauge.png" class="mini-icon" alt=""> Авто-очистка по порогу памяти
+        </span>
+        <label class="switch"><input type="checkbox" id="cfgAutoThreshold"><span class="slider"></span></label>
+      </div>
+
+      <div class="slider-row" style="margin-top: 6px;">
+        <span style="color: var(--text-dim);">Порог срабатывания:</span>
+        <b id="lblThresholdVal" style="color: var(--accent-primary); font-weight: 700; font-size: 12.5px;">80%</b>
+      </div>
+      <input type="range" id="rngThreshold" min="60" max="95" value="80" class="mem-range" oninput="setThresholdPreset(parseInt(this.value, 10))">
+
+      <!-- Quick Preset Pills -->
+      <div class="preset-pills-row">
+        <button type="button" class="preset-pill threshold-pill" data-val="70" onclick="setThresholdPreset(70)">70%</button>
+        <button type="button" class="preset-pill threshold-pill" data-val="75" onclick="setThresholdPreset(75)">75%</button>
+        <button type="button" class="preset-pill threshold-pill" data-val="80" onclick="setThresholdPreset(80)">80%</button>
+        <button type="button" class="preset-pill threshold-pill" data-val="85" onclick="setThresholdPreset(85)">85%</button>
+        <button type="button" class="preset-pill threshold-pill" data-val="90" onclick="setThresholdPreset(90)">90%</button>
+      </div>
+
+      <div class="card-inner-divider"></div>
+
+      <div class="slider-row">
+        <span style="color: var(--text-dim);">Сброс рабочих наборов при перегрузке</span>
+        <label class="switch"><input type="checkbox" id="cfgTrimOnThreshold"><span class="slider"></span></label>
+      </div>
+      <div class="slider-row">
+        <span style="color: var(--text-dim);">Очистка кэша Standby при перегрузке</span>
+        <label class="switch"><input type="checkbox" id="cfgClearOnThreshold"><span class="slider"></span></label>
+      </div>
+    </div>
+
+    <!-- Card 2: Авто-очистка по расписанию -->
+    <div class="card mem-card mem-config-card">
+      <div class="slider-row">
+        <span style="font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 7px; color: #fff;">
+          <img src="/icons/clock.png" class="mini-icon" alt=""> Авто-очистка по расписанию
+        </span>
+        <label class="switch"><input type="checkbox" id="cfgAutoInterval"><span class="slider"></span></label>
+      </div>
+
+      <div class="slider-row" style="margin-top: 6px;">
+        <span style="color: var(--text-dim);">Интервал таймера:</span>
+        <b id="lblIntervalVal" style="color: #c084fc; font-weight: 700; font-size: 12.5px;">15 мин</b>
+      </div>
+      <input type="range" id="rngInterval" min="3" max="120" value="15" class="mem-range" oninput="setIntervalPreset(parseInt(this.value, 10))">
+
+      <!-- Quick Preset Pills -->
+      <div class="preset-pills-row">
+        <button type="button" class="preset-pill interval-pill" data-val="15" onclick="setIntervalPreset(15)">15м</button>
+        <button type="button" class="preset-pill interval-pill" data-val="30" onclick="setIntervalPreset(30)">30м</button>
+        <button type="button" class="preset-pill interval-pill" data-val="45" onclick="setIntervalPreset(45)">45м</button>
+        <button type="button" class="preset-pill interval-pill" data-val="60" onclick="setIntervalPreset(60)">60м</button>
+        <button type="button" class="preset-pill interval-pill" data-val="90" onclick="setIntervalPreset(90)">90м</button>
+      </div>
+
+      <div class="card-inner-divider"></div>
+
+      <div class="slider-row">
+        <span style="color: var(--text-dim);">Сброс наборов по таймеру</span>
+        <label class="switch"><input type="checkbox" id="cfgTrimOnInterval"><span class="slider"></span></label>
+      </div>
+      <div class="slider-row">
+        <span style="color: var(--text-dim);">Очистка кэша Standby по таймеру</span>
+        <label class="switch"><input type="checkbox" id="cfgClearOnInterval"><span class="slider"></span></label>
+      </div>
+    </div>
+
+    <!-- Save Parameters Button -->
+    <button id="btnSaveConfig" class="btn btn-primary mem-btn-save" onclick="saveMemConfig()">
+      <img src="/icons/check.png" class="btn-icon" alt=""> Сохранить параметры
+    </button>
+
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/web/js/mem_cleaner.js"></script>
+</body>
+</html>
